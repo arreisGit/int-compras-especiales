@@ -104,9 +104,14 @@ VALUES
   FROM 
     @ProvL
 )
-UPDATE p 
-SET 
-  p.CUP_CatProductoServicio = pl.ID
+INSERT INTO CUP_ProvClasificacion
+(
+  Proveedor,
+  CatProductoServicio
+)
+SELECT 
+  pl.Proveedor,
+  pl.ID
 FROM 
   ProvL pl 
 JOIN Prov p ON p.Proveedor = pl.Proveedor
