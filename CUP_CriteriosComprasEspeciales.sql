@@ -1,7 +1,7 @@
-IF OBJECT_ID('dbo.CUP_CriteriosMonitoreoComprasEspeciales', 'U') IS NOT NULL 
-  DROP TABLE dbo.CUP_CriteriosMonitoreoComprasEspeciales; 
+IF OBJECT_ID('dbo.CUP_CriteriosComprasEspeciales', 'U') IS NOT NULL 
+  DROP TABLE dbo.CUP_CriteriosComprasEspeciales; 
 
-CREATE TABLE dbo.CUP_CriteriosMonitoreoComprasEspeciales
+CREATE TABLE dbo.CUP_CriteriosComprasEspeciales
 (
   ID INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
   ProvCatProductoServicio_ID HIERARCHYID
@@ -10,6 +10,8 @@ CREATE TABLE dbo.CUP_CriteriosMonitoreoComprasEspeciales
                              REFERENCES CUP_ProvCatProductoServicio(ID),
   ArtCategoria VARCHAR(50) NULL,
   ArtGrupo VARCHAR(50) NULL,
+  Articulo CHAR(20) NULL,
+  Largo VARCHAR(20) NULL,
   Accion_ID INT NOT NULL
              FOREIGN KEY 
              REFERENCES CUP_AccionesComprasEspeciales(ID),
@@ -18,9 +20,11 @@ CREATE TABLE dbo.CUP_CriteriosMonitoreoComprasEspeciales
                   REFERENCES CUP_RecurrenciaAccionComprasEspeciales(ID),
   FechaInicio DATE NOT NULL,
   Activo BIT NOT NULL 
-         CONSTRAINT [DF_CUP_CriteriosMonitoreoComprasEspeciales_Activo] DEFAULT 1,
+         CONSTRAINT [DF_CUP_CUP_CriteriosComprasEspeciales_Activo] DEFAULT 1,
+  Descripcion VARCHAR(255) NOT NULL,
+  Usuario INT NOT NULL,
   FechaRegistro DATETIME NOT NULL
-          CONSTRAINT [DF_CUP_CriteriosMonitoreoComprasEspeciales_FechaRegistro] DEFAULT GETDATE()
+          CONSTRAINT [DF_CUP_CUP_CriteriosComprasEspeciales_FechaRegistro] DEFAULT GETDATE()
 ) 
 
 GO

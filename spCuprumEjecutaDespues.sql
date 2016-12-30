@@ -1,6 +1,3 @@
-USE [Cuprum]
-GO
-
 /****** Object:  StoredProcedure [dbo].[spCuprumEjecutaDespues]    Script Date: 19/09/2016 03:39:54 p.m. ******/
 SET ANSI_NULLS OFF
 GO
@@ -23,17 +20,18 @@ ALTER PROCEDURE [dbo].[spCuprumEjecutaDespues]
 AS BEGIN          
 
 DECLARE 
-    @Oid_gasto		int,
-		@Estatus        CHAR(15),
-		@fecharegistro  datetime = getdate(),
-    --Kike Sierra: 20/OCT/2015: 
-    @Mov CHAR(20),
-    @MovID VARCHAR(20),
-    @MovTipo CHAR(20),
-    @Cup_VtaMostrador BIT   ,
-	@IdGasto int
-
-    -- 
+  @Oid_gasto		int,
+	@Estatus        CHAR(15),
+	@fecharegistro  datetime = getdate(),
+  --Kike Sierra: 2015-10-20
+  @Mov CHAR(20),
+  @MovID VARCHAR(20),
+  @MovTipo CHAR(20),
+  @Cup_VtaMostrador BIT   ,
+  @IdGasto int,
+  -- Kike Sierra: 2016-09-16
+  @GenerarMovTipo CHAR(20)
+ 
             
  /*** Apartado Prod *****/          
 
@@ -133,28 +131,53 @@ DECLARE
   END          
         
            
- /*** Apartado COMS *****/          
- IF @Modulo = 'COMS'          
- BEGIN          
+  /*** Apartado COMS *****/          
+  IF @Modulo = 'COMS'          
+  BEGIN          
 
-    --Kike Sierra: 17/07/2013: Procedimiento para la actualizacion de la tabla CuprumAnexo, segun el certificado especificado en SerieLoteMov          
-  EXEC dbo.spCuprumAnexoCertificado @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT           
+    SELECT 
+      @Mov = c.Mov,
+      @MovTipo = t.Clave,
+      @GenerarMovTipo = gt.Clave
+    FROM
+      Compra c
+    JOIN movtipo t ON t.Modulo = @MODULO  
+                  AND t.Mov = c.Mov
+    LEFT JOIN Movtipo gt ON gt.Modulo = @Modulo
+                        AND gt.Mov = @GenerarMov
+    WHERE 
+      c.ID = @ID
+
+    -- Kike Sierra: 2013/07/17: Procedimiento para la actualizacion de la tabla CuprumAnexo, segun el certificado especificado en SerieLoteMov          
+    EXEC dbo.spCuprumAnexoCertificado @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT           
             
+    -- Kike Sierra: 2013/10/09: Procedimiento encargado de aplicar de manera automática los anticipos a Entradas de Compra.          
+    EXEC dbo.spCuprumAplicacionAutoAnticipoOrdenC @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT      
+   
+    -- Kike Sierra: 2015/04/09: Procedimiento encargado de recalcular el vencimiento de los controles de calidad y sus Entradas.          
+    EXEC dbo.spCMLRecalcularVencimientoCOMS @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT  
 
-  --Kike Sierra: 09/10/2013: Procedimiento encargado de aplicar de manera automática los anticipos a Entradas de Compra.          
-   EXEC dbo.spCuprumAplicacionAutoAnticipoOrdenC @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT      
+    -- Kike Sierra: 2016/09/19: Procedimiento almacenado encargado de enviar las notificaciones sobre compras especiales.
+    EXEC dbo.CUP_SPP_NotificarCompraEspecial
+	    @Modulo,         
+	    @ID,          
+	    @Accion,        
+	    @Base, 
+      @Estatus,
+      @Mov,
+      @MovTipo,   
+	    @GenerarMov,
+      @GenerarMovTipo,     
+	    @Usuario,
+      @OK OUTPUT,
+      @OkRef OUTPUT       
    
 
---Kike Sierra: 09/04/2015: Procedimiento encargado de recalcular el vencimiento de los controles de calidad y sus Entradas.          
-   EXEC dbo.spCMLRecalcularVencimientoCOMS @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT  
-          
-
- END          
+  END          
 
              
 
 /*** Apartado Cxc *****/        
-
  IF @modulo = 'CXC'        
  BEGIN        
   --Kike SIerra 20/04/2014: Procedimiento almacenado encargado de controlar el flujo de las Factuars Anticipo automaticas dentro del apartado de cxc        
