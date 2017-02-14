@@ -1,0 +1,29 @@
+# Ignore all
+*
+!.gitignore
+
+# Unignore SQL And Documentation folders
+!SQL/
+!SQL/*
+!SQL/Functions/
+!SQL/Functions/*
+!SQL/Misc/
+!SQL/Misc/*
+!SQL/Seeds/
+!SQL/Seeds/*
+!SQL/Stored\ Procedures/
+!SQL/Stored\ Procedures/*
+!SQL/Tables/
+!SQL/Tables/*
+!SQL/Triggers/
+!SQL/Triggers/*
+!SQL/Views/
+!SQL/Views/*
+!Documentation/
+!Documentation/*
+
+# Unignore README alike files md
+!*.md
+
+# Unignore Liberacion_Scripts.xlsb
+!Liberacion_Scripts.xlsb
