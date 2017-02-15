@@ -3,9 +3,9 @@ INSERT INTO CUP_ComprasEspeciales_Recurrencias
   Descripcion
 )
 VALUES
-  ('Primeras 3 Compras'),
-  ('Siempre' )
-
+  ('Siempre' ),
+  ('Primeras 3 Compras')
+  
 GO
 
 SELECT
