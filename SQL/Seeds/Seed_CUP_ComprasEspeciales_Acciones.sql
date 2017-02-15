@@ -8,4 +8,7 @@ VALUES
 
 GO
 
-SELECT * FROM CUP_ComprasEspeciales_Acciones
+SELECT
+  *
+FROM
+  CUP_ComprasEspeciales_Acciones
