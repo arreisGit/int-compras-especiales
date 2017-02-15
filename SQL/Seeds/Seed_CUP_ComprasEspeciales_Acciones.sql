@@ -1,4 +1,4 @@
-INSERT INTO CUP_AccionesComprasEspeciales
+INSERT INTO CUP_ComprasEspeciales_Acciones
 (
   Descripcion
 )
@@ -8,4 +8,4 @@ VALUES
 
 GO
 
-SELECT * FROM CUP_AccionesComprasEspeciales
+SELECT * FROM CUP_ComprasEspeciales_Acciones

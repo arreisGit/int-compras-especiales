@@ -1,15 +1,25 @@
-/****** Object:  StoredProcedure [dbo].[CUP_fn_DinAuxiliarCorte]    Script Date: 05/02/2016 09:49:50 a.m. ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
- 
+
 /**************** DROP IF EXISTS ****************/
-IF EXISTS (SELECT name FROM sysobjects WHERE name = 'CUP_SPP_NotificarCompraEspecial') 
-  DROP PROCEDURE  CUP_SPP_NotificarCompraEspecial
+IF EXISTS (SELECT name FROM sysobjects WHERE name = 'CUP_SPP_ComprasEspeciales_Notificaciones') 
+  DROP PROCEDURE  CUP_SPP_ComprasEspeciales_Notificaciones
 GO
-CREATE PROCEDURE [dbo].CUP_SPP_NotificarCompraEspecial
+
+/* =============================================
+  Created by:    Enrique Sierra Gtez
+  Creation Date: 2017-02-15
+
+  Description: Procedimiento almacenado 
+  encargado de controlar las notificaciones
+  de las compras especiales.
+
+============================================= */
+
+CREATE PROCEDURE [dbo].CUP_SPP_ComprasEspeciales_Notificaciones
 (
 	  @Modulo         CHAR(5),          
 	  @ID             INT,            
@@ -50,7 +60,7 @@ AS BEGIN
     IF EXISTS( SELECT 
                  criterio.ID
                FROM 
-                  dbo.CUP_fn_CriteriosMonitoreoComprasEspeciales(@ID) criterio
+                  dbo.CUP_fn_CriteriosCompraEspecial(@ID) criterio
                WHERE 
                   criterio.Accion = 1)
     BEGIN

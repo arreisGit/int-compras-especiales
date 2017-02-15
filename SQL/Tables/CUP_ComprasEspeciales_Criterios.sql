@@ -1,7 +1,19 @@
-IF OBJECT_ID('dbo.CUP_CriteriosComprasEspeciales', 'U') IS NOT NULL 
-  DROP TABLE dbo.CUP_CriteriosComprasEspeciales; 
+IF OBJECT_ID('dbo.CUP_ComprasEspeciales_Criterios', 'U') IS NOT NULL 
+  DROP TABLE dbo.CUP_ComprasEspeciales_Criterios; 
 
-CREATE TABLE dbo.CUP_CriteriosComprasEspeciales
+GO
+
+/* =============================================
+  Created by:    Enrique Sierra Gtez
+  Creation Date: 2017-02-15
+
+  Description: Contiene todos los criterios
+  que provocan que una compra sea considerada 
+  como especial.
+
+============================================= */
+
+CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
 (
   ID INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
   ProvCatProductoServicio_ID HIERARCHYID
@@ -16,11 +28,11 @@ CREATE TABLE dbo.CUP_CriteriosComprasEspeciales
   Accion_ID INT NOT NULL
              CONSTRAINT FK_CUP_CriteriosComprasEspeciales_Accion
              FOREIGN KEY 
-             REFERENCES CUP_AccionesComprasEspeciales(ID),
+             REFERENCES CUP_ComprasEspeciales_Acciones(ID),
   Recurrencia_ID INT NOT NULL 
                   CONSTRAINT FK_CUP_CriteriosComprasEspeciales_Recurrencia
                   FOREIGN KEY  
-                  REFERENCES CUP_RecurrenciaAccionComprasEspeciales(ID),
+                  REFERENCES CUP_ComprasEspeciles_Recurrencias(ID),
   FechaInicio DATE NOT NULL,
   Activo BIT NOT NULL 
          CONSTRAINT [DF_CUP_CUP_CriteriosComprasEspeciales_Activo]

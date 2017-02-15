@@ -1,4 +1,4 @@
-INSERT INTO CUP_CriteriosMonitoreoComprasEspeciales
+INSERT INTO CUP_ComprasEspeciales_Criterios
 (
   ProvCatProductoServicio_ID,
   ArtCategoria,

@@ -1,9 +1,28 @@
 SET ANSI_NULLS, ANSI_WARNINGS ON;
 
-IF EXISTS(SELECT NAME FROM sysobjects WHERE xtype='TF' and name='CUP_fn_CriteriosAplicablesComprasEspeciales')
-	DROP FUNCTION dbo.CUP_fn_CriteriosAplicablesComprasEspeciales
-go
-CREATE FUNCTION dbo.CUP_fn_CriteriosAplicablesComprasEspeciales
+IF EXISTS(SELECT NAME FROM sysobjects WHERE xtype='TF' and name='CUP_fn_CriteriosCompraEspecial')
+	DROP FUNCTION dbo.CUP_fn_CriteriosCompraEspecial
+
+GO
+
+/* =============================================
+  Created by:    Enrique Sierra Gtez
+  Creation Date: 2017-02-15
+
+  Description: Devuelve los criterios que convierten a una compra
+  en especial.
+
+  EXAMPLE: 
+  SELECT
+    ID,
+    Accion,
+    Descripcion
+  FROM
+    dbo.CUP_fn_CriteriosCompraEspecial(1)
+
+============================================= */
+
+CREATE FUNCTION dbo.CUP_fn_CriteriosCompraEspecial
 ( 
   @Id INT 
 )
