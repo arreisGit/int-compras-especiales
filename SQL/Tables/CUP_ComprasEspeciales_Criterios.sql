@@ -43,5 +43,3 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
          CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_Activo]
          DEFAULT 1
 ) 
-
-GO
