@@ -16,6 +16,11 @@ GO
 CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
 (
   ID INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+  Usuario INT NOT NULL,
+  Descripcion VARCHAR(255) NOT NULL,
+  FechaRegistro DATETIME NOT NULL
+                CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_FechaRegistro]
+                DEFAULT GETDATE(),
   ProvCatProductoServicio_ID HIERARCHYID
                              NULL
                              CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_ProvCatProductoServicio
@@ -36,12 +41,7 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
   FechaInicio DATE NOT NULL,
   Activo BIT NOT NULL 
          CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_Activo]
-         DEFAULT 1,
-  Descripcion VARCHAR(255) NOT NULL,
-  Usuario INT NOT NULL,
-  FechaRegistro DATETIME NOT NULL
-                CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_FechaRegistro]
-                DEFAULT GETDATE()
+         DEFAULT 1
 ) 
 
 GO
