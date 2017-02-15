@@ -26,9 +26,26 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
                              CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_ProvCatProductoServicio
                              FOREIGN KEY
                              REFERENCES CUP_ProvCatProductoServicio(ID),
-  ArtCategoria VARCHAR(50) NULL,
-  ArtGrupo VARCHAR(50) NULL,
-  Articulo CHAR(20) NULL,
+  Proveedor CHAR(10) NULL
+            CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Proveedor
+            FOREIGN KEY
+            REFERENCES Prov ( Proveedor ),
+  ArtCategoria VARCHAR(50) NULL
+               CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_ArtCategoria
+               FOREIGN KEY
+               REFERENCES ArtCat ( Categoria ),
+  ArtGrupo VARCHAR(50) NULL
+           CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_ArtGrupo
+           FOREIGN KEY
+           REFERENCES ArtGrupo ( Grupo ),
+  ArtFamilia VARCHAR(50) NULL
+             CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_ArtFamilia
+             FOREIGN KEY
+             REFERENCES ArtFam ( Familia ),
+  Articulo CHAR(20) NULL
+           CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Articulo
+           FOREIGN KEY
+           REFERENCES Art ( Articulo ),
   Largo VARCHAR(20) NULL,
   Accion_ID INT NOT NULL
              CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Accion
