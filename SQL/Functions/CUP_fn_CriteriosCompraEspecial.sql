@@ -41,9 +41,9 @@ BEGIN
     Accion,
     Descripcion
   )
-  SELECT  DISTINCT
+  SELECT DISTINCT
     criterio.ID,
-    criterio.Accion,
+    Accion = criterio.Accion_ID,
     criterio.Descripcion
   FROM  
     Compra c
@@ -98,15 +98,15 @@ BEGIN
                            SELECT
                              ID = MAX(mf.DID)
                            FROM
-                             dbo.fnCMLMovFlujo('COMS',coms_Ant.ID,0) mf
+                             dbo.fnCMLMovFlujo('COMS',coms_esp.Compra_ID,0) mf
                            JOIN compra entrada ON entrada.ID = mf.DID
                            WHERE 
-                             mfa.Indice > 0
-                           AND mfa.DModulo = 'COMS'
-                           AND mfa.DMovTipo IN (
-                                                 'COMS.F',
-                                                 'COMS.EG'
-                                                )
+                             mf.Indice > 0
+                           AND mf.DModulo = 'COMS'
+                           AND mf.DMovTipo IN (
+                                                'COMS.F',
+                                                'COMS.EG'
+                                              )
                            AND entrada.Estatus = 'CONCLUIDO'
                           ) entradas_compra
                 WHERE 
@@ -116,9 +116,9 @@ BEGIN
     c.ID = @ID
   -- Validar Recurrencia
   AND (
-        criterio.Recurrencia = 1 -- Siempre
+        criterio.Recurrencia_ID = 1 -- Siempre
       OR  (
-            criterio = 2 
+            criterio.Recurrencia_ID = 2 
           AND ISNULL(compras_especiales.Cuantas,0) < 3
           )
       )
