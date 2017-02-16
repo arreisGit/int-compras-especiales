@@ -9,8 +9,10 @@ INSERT INTO CUP_ComprasEspeciales_Criterios
   ArtFamilia,
   Articulo,
   Dimension,
+  Vinil,
   Accion_ID,
   Recurrencia_ID,
+  Recurrencia_Cantidad,
   FechaInicio
 )
 VALUES
@@ -24,8 +26,10 @@ VALUES
   NULL,
   NULL,
   NULL,
+  NULL,
   2,
   2,
+  3,
   '2016-09-15'
 )
 

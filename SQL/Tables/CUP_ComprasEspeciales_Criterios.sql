@@ -51,6 +51,7 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
            FOREIGN KEY
            REFERENCES Art ( Articulo ),
   Dimension VARCHAR(20) NULL,
+  Vinil     VARCHAR(20) NULL,
   Accion_ID INT NOT NULL
              CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Accion
              FOREIGN KEY 
@@ -59,6 +60,9 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
                   CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Recurrencia
                   FOREIGN KEY  
                   REFERENCES CUP_ComprasEspeciales_Recurrencias(ID),
+  Recurrencia_Cantidad   DECIMAL(18,4) NOT NULL
+                         CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_Recurrencia_Cantidad]
+                         DEFAULT 0,
   FechaInicio DATE NOT NULL,
   Activo BIT NOT NULL 
          CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_Activo]

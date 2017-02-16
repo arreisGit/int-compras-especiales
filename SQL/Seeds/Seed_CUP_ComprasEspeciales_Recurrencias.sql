@@ -4,7 +4,7 @@ INSERT INTO CUP_ComprasEspeciales_Recurrencias
 )
 VALUES
   ('Siempre' ),
-  ('Primeras 3 Compras')
+  ('Primeras N Compras')
   
 GO
 
