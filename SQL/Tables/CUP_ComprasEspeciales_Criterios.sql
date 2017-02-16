@@ -21,6 +21,10 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
   FechaRegistro DATETIME NOT NULL
                 CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_FechaRegistro]
                 DEFAULT GETDATE(),
+  Cliente       CHAR(10)
+                CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Cliente
+                FOREIGN KEY
+                REFERENCES Cte ( Cliente ),
   ProvCatProductoServicio_ID HIERARCHYID
                              NULL
                              CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_ProvCatProductoServicio
@@ -46,7 +50,7 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
            CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Articulo
            FOREIGN KEY
            REFERENCES Art ( Articulo ),
-  Largo VARCHAR(20) NULL,
+  Dimension VARCHAR(20) NULL,
   Accion_ID INT NOT NULL
              CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Accion
              FOREIGN KEY 

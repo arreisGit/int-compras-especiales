@@ -16,7 +16,9 @@ GO
 CREATE TABLE dbo.CUP_ComprasEspeciales_Acciones
 (
   ID INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
-  Descripcion VARCHAR(255) NOT NULL,
+  Descripcion VARCHAR(255) NOT NULL
+              CONSTRAINT [AK_CUP_ComprasEspeciales_Acciones_Descripcion]
+              UNIQUE,
   Activo BIT NOT NULL 
          CONSTRAINT [DF_CUP_ComprasEspeciales_Acciones_Activo] DEFAULT 1
 )

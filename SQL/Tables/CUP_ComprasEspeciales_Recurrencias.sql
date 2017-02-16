@@ -17,7 +17,9 @@ GO
 CREATE TABLE dbo.CUP_ComprasEspeciales_Recurrencias
 (
   ID INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
-  Descripcion VARCHAR(255) NOT NULL,
+  Descripcion VARCHAR(255) NOT NULL
+              CONSTRAINT [AK_CUP_ComprasEspeciales_Recurrencias_Descripcion]
+              UNIQUE,
   Activo BIT NOT NULL 
          CONSTRAINT [DF_CUP_ComprasEspeciales_Recurrencias_Activo] DEFAULT 1
 ) 
