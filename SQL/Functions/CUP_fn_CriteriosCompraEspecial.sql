@@ -32,7 +32,10 @@ RETURNS @Criterios TABLE
               PRIMARY KEY,
   Descripcion VARCHAR(255) NOT NULL,
   Accion_ID   INT NOT NULL,
+  Accion      VARCHAR(255) NOT NULL,
   Recurrencia_ID INT NOT NULL,
+  Recurrencia VARCHAR(255) NOT NULL,
+  Recurrencia_Valor DECIMAL(18,4) NULL,
   ComprasPreviamenteEfectuadas INT NOT NULL
 )
 AS
@@ -43,14 +46,20 @@ BEGIN
     Criterio_ID,
     Descripcion,
     Accion_ID,
+    Accion,
     Recurrencia_ID,
+    Recurrencia,
+    RecurrenciaValor,
     ComprasPreviamenteEfectuadas
   )
   SELECT DISTINCT
     criterio.ID,
     criterio.Descripcion,
     criterio.Accion_ID,
+    Accion = c_accio.Descripcion,
     criterio.Recurrencia_ID,
+    Recurrencia = c_recurrencia.Descripcion,
+    Recurrencia_Valor = criterio.Recurrencia_Valor,
     ComprasPreviamenteEfectuadas = ISNULL(compras_especiales.Cuantas,0)
   FROM  
     Compra c
