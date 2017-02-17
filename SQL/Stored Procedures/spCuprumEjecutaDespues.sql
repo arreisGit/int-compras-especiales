@@ -201,7 +201,8 @@ AS BEGIN
 	IF @Modulo = 'COMS'
 	BEGIN
 
-		--Kike Sierra: 17/07/2013: Procedimiento para la actualizacion de la tabla CuprumAnexo, segun el certificado especificado en SerieLoteMov          
+		-- Kike Sierra: 17/07/2013: Procedimiento para la actualizacion de la tabla CuprumAnexo,
+    -- segun el certificado especificado en SerieLoteMov          
 		EXEC dbo.spCuprumAnexoCertificado
 			@Modulo,
 			@ID,
@@ -212,7 +213,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		--Kike Sierra: 09/10/2013: Procedimiento encargado de aplicar de manera automática los anticipos a Entradas de Compra.          
+		-- Kike Sierra: 09/10/2013: Procedimiento encargado de aplicar de manera automática los anticipos a Entradas de Compra.          
 		EXEC dbo.spCuprumAplicacionAutoAnticipoOrdenC
 			@Modulo,
 			@ID,
@@ -223,7 +224,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		--Kike Sierra: 09/04/2015: Procedimiento encargado de recalcular el vencimiento de los controles de calidad y sus Entradas.          
+		-- Kike Sierra: 09/04/2015: Procedimiento encargado de recalcular el vencimiento de los controles de calidad y sus Entradas.          
 		EXEC dbo.spCMLRecalcularVencimientoCOMS
 			@Modulo,
 			@ID,
@@ -234,7 +235,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		--Procedimiento encargado de ejecutar los cambios de Costos Base y Metal de Compra.
+		-- Procedimiento encargado de ejecutar los cambios de Costos Base y Metal de Compra.
 		EXEC dbo.CUP_spAfectacionesEfectoOCCOMS
 			@Modulo,
 			@ID,
