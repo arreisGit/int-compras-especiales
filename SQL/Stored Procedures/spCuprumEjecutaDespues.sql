@@ -1,11 +1,15 @@
-/****** Object:  StoredProcedure [dbo].[spCuprumEjecutaDespues]    Script Date: 19/09/2016 03:39:54 p.m. ******/
+USE [Cuprum]
+GO
+
+/****** Object:  StoredProcedure [dbo].[spCuprumEjecutaDespues]    Script Date: 17/02/2017 12:14:48 p.m. ******/
 SET ANSI_NULLS OFF
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [dbo].[spCuprumEjecutaDespues]          
+
+ALTER PROCEDURE [dbo].[spCuprumEjecutaDespues]
 	@Modulo  CHAR(5),          
 	@ID          int,            
 	@Accion      char(20),            
@@ -15,23 +19,24 @@ ALTER PROCEDURE [dbo].[spCuprumEjecutaDespues]
 	@Ok          int          OUTPUT,            
 	@OkRef       varchar(255)  OUTPUT,          
 	--          
-	@FacturaID  INT OUTPUT           
-
+	@FacturaID  INT OUTPUT,
+	--
+	@IDGenerar INT=NULL
 AS BEGIN          
 
-DECLARE 
-  @Oid_gasto		int,
+  DECLARE 
+    @Oid_gasto		int,
 	@Estatus        CHAR(15),
 	@fecharegistro  datetime = getdate(),
-  --Kike Sierra: 2015-10-20
-  @Mov CHAR(20),
-  @MovID VARCHAR(20),
-  @MovTipo CHAR(20),
-  @Cup_VtaMostrador BIT   ,
-  @IdGasto int,
-  -- Kike Sierra: 2016-09-16
-  @GenerarMovTipo CHAR(20)
- 
+    --Kike Sierra: 20/OCT/2015: 
+    @Mov CHAR(20),
+    @MovID VARCHAR(20),
+    @MovTipo CHAR(20),
+    @Cup_VtaMostrador BIT,
+	@IdGasto INT,
+	@OrdenSurtidoID INT
+
+    -- 
             
  /*** Apartado Prod *****/          
 
@@ -41,7 +46,7 @@ DECLARE
   EXEC dbo.spCuprumCancelacionParcialProd @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT           
   --Carlos Jimenez: 04/02/2015: Procedimiento para enviar correo del inventario actual del material puesto en la Orden de Produccion
   EXEC CUP_SPQ_InventarioProduccion @Modulo, @ID, @Accion
- END          
+ END
           
 
  /*** Apartado INV *****/          
@@ -53,7 +58,7 @@ DECLARE
   --MZUNIGAF: 16/03/2015: Procedimiento para eliminar decimales en transitos y Concluirlos
   EXEC dbo.spCuprumConcluyeTransito @Modulo,@ID
 
- END          
+ END
 
           
 
@@ -76,9 +81,20 @@ DECLARE
                     AND v.Mov = t.Mov
     WHERE 
       v.ID = @ID
-   
-
-      --
+	  
+	  
+	--#115Sugerencia de proceso mostrador lean en pedidos.
+	EXEC CUP_SP_AfectacionesMostradorLeanDespues 
+												  @Modulo = @Modulo,
+												  @ID = @ID,
+												  @Accion = @Accion,
+												  @Base = @Base,
+												  @GenerarMov = @GenerarMov,
+												  @Usuario = @Usuario,
+												  @Ok = @Ok OUTPUT,
+												  @OkRef = @OkRef OUTPUT,
+												  @OrdenSurtidoID = @OrdenSurtidoID OUTPUT,
+												  @IDGenerar = @IDGenerar
 
     --Kike Sierra: 15/10/2013 : Informa cuando una Orden C esta repetida          
     EXEC dbo.spCuprumInformaVtaOrdenC @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT           
@@ -122,62 +138,47 @@ DECLARE
                   @OkReF        = @OkRef  OUTPUT
 
     END
-    --
-    
     
     --Carlos Orozco: 11/07/2016: Generar Log Para Guardar la Estrategia Utilizada
     EXEC CUP_SPI_LogVentaDescuentos @ID, @Mov, @MovTipo
 
+    -- EBG: 2017-01-12: Concluye las ordenes de surtido  y pedidos que hayan quedado 
+    -- en estatus PENDIENTE por tema de decimales
+    EXEC CUP_SP_ConcluirPendienteEspecial @Usuario, @ID
+
+    --Dev 23-01-2017: Ejecuta procesos despues de Afectar la Bonificacion desde Factura
+	  EXEC CUP_sp_DespuesBonificacionesFactura @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT,@FacturaID,@IDGenerar
+
   END          
         
            
-  /*** Apartado COMS *****/          
-  IF @Modulo = 'COMS'          
-  BEGIN          
+ /*** Apartado COMS *****/          
+ IF @Modulo = 'COMS'          
+ BEGIN          
 
-    SELECT 
-      @Mov = c.Mov,
-      @MovTipo = t.Clave,
-      @GenerarMovTipo = gt.Clave
-    FROM
-      Compra c
-    JOIN movtipo t ON t.Modulo = @MODULO  
-                  AND t.Mov = c.Mov
-    LEFT JOIN Movtipo gt ON gt.Modulo = @Modulo
-                        AND gt.Mov = @GenerarMov
-    WHERE 
-      c.ID = @ID
-
-    -- Kike Sierra: 2013/07/17: Procedimiento para la actualizacion de la tabla CuprumAnexo, segun el certificado especificado en SerieLoteMov          
-    EXEC dbo.spCuprumAnexoCertificado @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT           
+    --Kike Sierra: 17/07/2013: Procedimiento para la actualizacion de la tabla CuprumAnexo, segun el certificado especificado en SerieLoteMov          
+  EXEC dbo.spCuprumAnexoCertificado @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT           
             
-    -- Kike Sierra: 2013/10/09: Procedimiento encargado de aplicar de manera automática los anticipos a Entradas de Compra.          
-    EXEC dbo.spCuprumAplicacionAutoAnticipoOrdenC @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT      
-   
-    -- Kike Sierra: 2015/04/09: Procedimiento encargado de recalcular el vencimiento de los controles de calidad y sus Entradas.          
-    EXEC dbo.spCMLRecalcularVencimientoCOMS @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT  
 
-    -- Kike Sierra: 2016/09/19: Procedimiento almacenado encargado de enviar las notificaciones sobre compras especiales.
-    EXEC dbo.CUP_SPP_NotificarCompraEspecial
-	    @Modulo,         
-	    @ID,          
-	    @Accion,        
-	    @Base, 
-      @Estatus,
-      @Mov,
-      @MovTipo,   
-	    @GenerarMov,
-      @GenerarMovTipo,     
-	    @Usuario,
-      @OK OUTPUT,
-      @OkRef OUTPUT       
+  --Kike Sierra: 09/10/2013: Procedimiento encargado de aplicar de manera automática los anticipos a Entradas de Compra.          
+   EXEC dbo.spCuprumAplicacionAutoAnticipoOrdenC @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT      
    
 
-  END          
+--Kike Sierra: 09/04/2015: Procedimiento encargado de recalcular el vencimiento de los controles de calidad y sus Entradas.          
+   EXEC dbo.spCMLRecalcularVencimientoCOMS @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT  
+
+
+   SET ANSI_NULLS, ANSI_WARNINGS ON;
+   --Procedimiento encargado de ejecutar los cambios de Costos Base y Metal de Compra.
+   EXEC dbo.CUP_spAfectacionesEfectoOCCOMS @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT,@IDGenerar
+   SET ANSI_NULLS, ANSI_WARNINGS OFF;       
+
+ END          
 
              
 
 /*** Apartado Cxc *****/        
+
  IF @modulo = 'CXC'        
  BEGIN        
   --Kike SIerra 20/04/2014: Procedimiento almacenado encargado de controlar el flujo de las Factuars Anticipo automaticas dentro del apartado de cxc        
@@ -185,7 +186,11 @@ DECLARE
     
     --Kike Sierra: 30/07/2014: Actualiza la fecha de Vencimiento de un cheque devuelto .en base al cheque asignado      
   EXEC spCuprumVencimientoChequeDevuelto @Modulo,@ID,@Accion,'AVANZAR',@Ok OUTPUT,@OkRef OUTPUT       
-      
+  
+  --EB 09/Ene/2017
+  /*Avanza Orden surtido de Pedido al Concluir su Factura Anticipo en un "Cobro"*/
+  EXEC CUP_spFacturaAnticipoAvanzaPedido @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,@Ok OUTPUT,@Okref OUTPUT,@IDGenerar
+
  END        
 
      
@@ -357,20 +362,8 @@ END
 
 --Kike Sierra 12/05/2015: Procedimiento Almacenado encargado de realizar los cambios en fecha requerida  de "Oferta Servicio" de las solicitudes Despues de afectar.
 
-  EXEC spCMLServicioSolicitud @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,'DESPUESAFECTAR',@Ok OUTPUT,@OkRef OUTPUT                          
-
-        
-
-                 
+  EXEC spCMLServicioSolicitud @Modulo,@ID,@Accion,@Base,@GenerarMov,@Usuario,'DESPUESAFECTAR',@Ok OUTPUT,@OkRef OUTPUT
 
 RETURN          
 
 END 
-
-
-
-
-
-
-GO
-
