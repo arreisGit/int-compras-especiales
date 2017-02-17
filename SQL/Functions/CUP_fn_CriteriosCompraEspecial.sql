@@ -122,6 +122,11 @@ BEGIN
                                                         criterio.ProvCatProductoServicio_ID IS NULL 
                                                      OR prov_clas.CatProductoServicio.IsDescendantOf(criterio.ProvCatProductoServicio_ID) = 1
                                                     )
+                                                -- Proveedor
+                                                AND ( 
+                                                        criterio.Proveedor IS NULL 
+                                                     OR criterio.Proveedor = p.Proveedor
+                                                    )
                                                     -- Categoria Articulo
                                                 AND ( 
                                                         criterio.ArtCategoria IS NULL 
@@ -131,6 +136,11 @@ BEGIN
                                                 AND ( 
                                                         criterio.ArtGrupo IS NULL 
                                                       OR criterio.ArtGrupo = a.Grupo
+                                                    )
+                                                    --  Familia Articulo
+                                                AND ( 
+                                                        criterio.ArtFamilia IS NULL 
+                                                      OR criterio.ArtFamilia = a.Familia
                                                     )
                                                     -- Articulo
                                                 AND (
