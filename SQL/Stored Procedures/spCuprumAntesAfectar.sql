@@ -19,9 +19,13 @@ ALTER PROCEDURE [dbo].[spCuprumAntesAfectar]
 	@Ok         INT OUTPUT,
 	@OkRef      VARCHAR(255) OUTPUT
 AS BEGIN
+
 	DECLARE
 		@FechaRequerida DATE,
-		@Mov            CHAR(30);
+    @Estatus        CHAR(15),
+		@Mov            CHAR(20),
+    @MovTipo        CHAR(20),
+    @GenerarMovTipo  CHAR(20);
 
 	IF @Modulo = 'VTAS'
 	BEGIN
@@ -177,6 +181,7 @@ AS BEGIN
 			@Usuario,
 			@Ok OUTPUT,
 			@OkRef OUTPUT;
+
 		SELECT
 			@Mov = Mov
 		FROM
@@ -188,6 +193,21 @@ AS BEGIN
 
 	IF @Modulo = 'COMS'
 	BEGIN
+
+    SELECT
+      @Estatus = c.Estatus,
+      @Mov = t.Mov,
+      @MovTipo = t.Clave,
+      @GenerarMovTipo = gt.Clave
+    FROM 
+      Compra c 
+    JOIN Movtipo t ON t.Modulo = 'COMS'
+                  AND t.Mov = c.Mov
+    LEFT JOIN Movtipo gt ON gt.Modulo ='COMS'
+                        AND gt.Mov = @GenerarMov
+    WHERE 
+      c.Id = @ID
+
 		--Kike Sierra: 11/03/2015: Proceso encargado de Recalcular la Fecha Vencimiento de los Controles Calidad, en base a la fecha factura.
 		EXEC spCuprumVencimientoCOMS
 			@modulo,

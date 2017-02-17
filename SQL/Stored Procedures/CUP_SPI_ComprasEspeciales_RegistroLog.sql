@@ -35,4 +35,24 @@ CREATE PROCEDURE [dbo].CUP_SPI_ComprasEspeciales_RegistroLog
 )                
 AS BEGIN 
   
+  IF @Modulo = 'COMS'
+  AND @Movtipo = 'COMS.O'
+  AND @Mov LIKE 'Compra%'
+  AND @Accion IN ('AFECTAR','GENERAR')
+  AND @Estatus = 'SINAFECTAR'
+  BEGIN
+    
+    INSERT INTO CUP_ComprasEspeciales
+    (
+      Compra_ID,
+      Criterio_ID
+    )
+    SELECT
+      @ID,
+      Criterio_ID
+    FROM 
+      dbo.CUP_fn_CriteriosCompraEspecial(@ID)
+    
+  END
+
 END
