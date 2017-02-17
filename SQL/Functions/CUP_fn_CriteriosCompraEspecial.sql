@@ -14,9 +14,14 @@ GO
 
   EXAMPLE: 
   SELECT
-    ID,
+    Criterio_ID,
+    Descripcion,
+    Accion_ID,
     Accion,
-    Descripcion
+    Recurrencia_ID,
+    Recurrencia,
+    Recurrencia_Cantidad,
+    ComprasPreviamenteEfectuadas
   FROM
     dbo.CUP_fn_CriteriosCompraEspecial(1)
 
@@ -35,7 +40,7 @@ RETURNS @Criterios TABLE
   Accion      VARCHAR(255) NOT NULL,
   Recurrencia_ID INT NOT NULL,
   Recurrencia VARCHAR(255) NOT NULL,
-  Recurrencia_Valor DECIMAL(18,4) NULL,
+  Recurrencia_Cantidad DECIMAL(18,4) NULL,
   ComprasPreviamenteEfectuadas INT NOT NULL
 )
 AS
@@ -49,17 +54,17 @@ BEGIN
     Accion,
     Recurrencia_ID,
     Recurrencia,
-    RecurrenciaValor,
+    Recurrencia_Cantidad,
     ComprasPreviamenteEfectuadas
   )
   SELECT DISTINCT
     criterio.ID,
     criterio.Descripcion,
     criterio.Accion_ID,
-    Accion = c_accio.Descripcion,
+    Accion = c_accion.Descripcion,
     criterio.Recurrencia_ID,
     Recurrencia = c_recurrencia.Descripcion,
-    Recurrencia_Valor = criterio.Recurrencia_Valor,
+    Recurrencia_Cantidad = criterio.Recurrencia_Cantidad,
     ComprasPreviamenteEfectuadas = ISNULL(compras_especiales.Cuantas,0)
   FROM  
     Compra c
