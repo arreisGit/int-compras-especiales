@@ -29,14 +29,14 @@ SELECT
   Proveedor = NULL,
   ArtCategoria =   NULL,
   ArtGrupo =   NULL,
-  ArtFamilia =   NULL,
+  ArtFamilia =  NULL,
   Articulo =   NULL,
   Dimension =   NULL,
   Vinil =   NULL,
   Accion_ID =   2,
   Recurrencia_ID =   2,
   Recurrencia_Cantidad =   3,
-  FechaInicio =   '2016-09-15'
+  FechaInicio =   '2017-02-15'
 
 
 SELECT 
