@@ -67,4 +67,95 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
   Activo BIT NOT NULL 
          CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_Activo]
          DEFAULT 1
-) 
+)
+
+CREATE NONCLUSTERED INDEX IX_CUP_ComprasEspeciales_Criterios_ID
+  ON CUP_ComprasEspeciales_Criterios ( ID )
+INCLUDE 
+(
+  Usuario,
+  Descripcion,
+  FechaRegistro,
+  Cliente,
+  ProvCatProductoServicio_ID,
+  Proveedor,
+  ArtCategoria,
+  ArtGrupo,
+  ArtFamilia,
+  Articulo,
+  Dimension,
+  Vinil,
+  Accion_ID,
+  Recurrencia_ID,
+  Recurrencia_Cantidad,
+  FechaInicio,
+  Activo
+)
+
+CREATE NONCLUSTERED INDEX IX_CUP_ComprasEspeciales_Criterios_Activo
+  ON CUP_ComprasEspeciales_Criterios ( Activo )
+INCLUDE 
+( 
+  ID,
+  Usuario,
+  Descripcion,
+  FechaRegistro,
+  Cliente,
+  ProvCatProductoServicio_ID,
+  Proveedor,
+  ArtCategoria,
+  ArtGrupo,
+  ArtFamilia,
+  Articulo,
+  Dimension,
+  Vinil,
+  Accion_ID,
+  Recurrencia_ID,
+  Recurrencia_Cantidad,
+  FechaInicio
+)
+
+CREATE NONCLUSTERED INDEX IX_CUP_ComprasEspeciales_Criterios_Proveedor
+  ON CUP_ComprasEspeciales_Criterios ( Proveedor )
+INCLUDE 
+( 
+  ID,
+  Usuario,
+  Descripcion,
+  FechaRegistro,
+  Cliente,
+  ProvCatProductoServicio_ID,
+  ArtCategoria,
+  ArtGrupo,
+  ArtFamilia,
+  Articulo,
+  Dimension,
+  Vinil,
+  Accion_ID,
+  Recurrencia_ID,
+  Recurrencia_Cantidad,
+  FechaInicio,
+  Activo
+)
+
+
+CREATE NONCLUSTERED INDEX IX_CUP_ComprasEspeciales_Criterios_Articulo_Dimension_Vinil
+  ON CUP_ComprasEspeciales_Criterios ( Articulo, Dimension, Vinil)
+INCLUDE 
+( 
+  ID,
+  Usuario,
+  Descripcion,
+  FechaRegistro,
+  Cliente,
+  ProvCatProductoServicio_ID,
+  Proveedor,
+  ArtCategoria,
+  ArtGrupo,
+  ArtFamilia,
+  Accion_ID,
+  Recurrencia_ID,
+  Recurrencia_Cantidad,
+  FechaInicio,
+  Activo
+)
