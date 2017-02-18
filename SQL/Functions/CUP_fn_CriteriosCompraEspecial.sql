@@ -83,7 +83,7 @@ BEGIN
   CROSS APPLY(
                 SELECT TOP  1
                   ID = mfOc.OID,
-                  oc.FechaRegistro
+                  FechaRegistro = ISNULL(oc.FechaRegistro, oc.FechaEmision)
                 FROM
                   dbo.fnCMLMovFlujo('COMS',c.ID,0) mfOc
                 JOIN compra oc ON oc.ID = mfOc.DID
@@ -92,7 +92,6 @@ BEGIN
                 AND mfOc.OModulo = 'COMS'
                 AND mfOc.OMovTipo = 'COMS.O'
                 AND mfOc.OMov Like 'Orden%'
-                AND oc.Estatus IN ('CONCLUIDO','PENDIENTE')
                 ORDER BY
                    mfOc.Indice ASC,
                    oc.ID ASC

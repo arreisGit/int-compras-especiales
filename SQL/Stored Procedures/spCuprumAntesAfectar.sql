@@ -245,19 +245,19 @@ AS BEGIN
     -- Kike Sierra: 2017-02-17: Procedimiento encargado de llevar el registro de las  
     -- compras especiales.
     EXEC CUP_SPI_ComprasEspeciales_RegistroLog
-      @Modulo,
-	    @ID,
-	    @Accion,     
-	    @Base,
+      @Modulo,  
+      @ID,
+      @Accion,
+      @Base,
       @Estatus,
       @Mov,
-      @MovTipo,        
-	    @GenerarMov,
-      @GenerarMovTipo,         
-	    @Usuario,
+      @MovTipo,
+      @GenerarMov,
+      @GenerarMovTipo,
+      @Usuario,
       @OK OUTPUT,
       @OkRef OUTPUT       
-
+     
 	END;
 
 	/*Apartado Varios*/

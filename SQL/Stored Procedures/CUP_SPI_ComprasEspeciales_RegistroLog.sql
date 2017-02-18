@@ -37,11 +37,11 @@ AS BEGIN
   
   IF @Modulo = 'COMS'
   AND @Movtipo = 'COMS.O'
-  AND @Mov LIKE 'Compra%'
+  AND @Mov LIKE 'Orden%'
   AND @Accion IN ('AFECTAR','GENERAR')
   AND @Estatus = 'SINAFECTAR'
   BEGIN
-    
+
     INSERT INTO CUP_ComprasEspeciales
     (
       Compra_ID,
