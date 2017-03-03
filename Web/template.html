@@ -26,15 +26,17 @@
     .margin-sm-em-bottom {margin-bottom: .5em;}
     .margin-md-em-bottom {margin-bottom:  1em;}  
     .margin-lg-em-bottom {margin-bottom:  2em;} 
-    .sm-left-margin{margin-left: .5em;}
+   
+    .thead-inverse th{ background-color: #002F57;}
+
+    .caption-top{ caption-side: top; }
 
     /* Because we're not importing a css file
        the min-width must be hardcoded :v  */
     @media (min-width: 768px) {
       .text-md-left {text-align: left;}
     }
-
-   }
+    
   </style>
 </head>
 <body>
@@ -157,8 +159,10 @@
     <main>
       <div class="row">
         <div class="col-12">
-          <table class="table table-condensed">
-            <caption class="sm-left-margin">Criterios aplicados:</caption>
+          
+
+          <table class="table table-sm">
+            <caption class="caption-top">Criterios aplicados:</caption>
             <thead>
               <tr>
                 <th>Criterio</th>
@@ -176,6 +180,7 @@
               </tr>
             </tbody>
           </table>
+
         </div>
       </div>
     </main>
