@@ -19,11 +19,23 @@
 
   <!-- custom css -->
   <style>
+    /* why would anyone use a bigger screen!! :V */
+    .container-fluid {max-width:1170px;}
+
     .margin-xs-em-bottom {margin-bottom: .3em;}  
     .margin-sm-em-bottom {margin-bottom: .5em;}
     .margin-md-em-bottom {margin-bottom:  1em;}  
     .margin-lg-em-bottom {margin-bottom:  2em;} 
     .sm-left-margin{margin-left: .5em;}
+
+    /* Because we're not importing a css file
+       the min-width must be hardcoded :v  */
+    @media (min-width: 992px) {
+      .text-lg-left {text-align: left;}
+      .text-lg-padding-left {padding-left: 2em;}
+    }
+
+   }
   </style>
 </head>
 <body>
@@ -36,17 +48,15 @@
                   align-items-center
                   margin-md-em-bottom">
         <div class="hidden-sm-down
-                    col-md-2
-                    col-lg-2">
-          <img class="img-responsive"
+                    col-md-4">
+          <img class="img-fluid"
                src="http://www.cuprum.com/images/header/logo.gif"
                alt="CUPRUM logo">
         </div>
-        <div class="col-12 
-                    col-sm-9 offset-2
-                    col-md-7 offset-md-2
-                    col-lg-6
-                    text-left">
+        <div class="col
+                    text-center
+                    text-lg-left
+                    text-lg-padding-left">
           <h3>Notificación de compra especial</h3>
         </div>
       </div>
