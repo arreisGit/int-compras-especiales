@@ -73,6 +73,7 @@ BEGIN
   JOIN CompraD d ON d.ID = c.ID
   JOIN Prov p ON p.Proveedor = c.Proveedor
   JOIN Art a ON d.Articulo = a.Articulo
+  JOIN Alm ON alm.Almacen = c.Almacen
   CROSS APPLY (
             SELECT  
               Dimension =  dbo.CUP_fn_SubCtaDim(d.SubCuenta),
@@ -111,10 +112,15 @@ BEGIN
   ) sol_abasto
 	JOIN CUP_ComprasEspeciales_Criterios criterio ON  criterio.Activo = 1
                                                 AND criterio.FechaInicio <= orden_compra.FechaRegistro
+                                                    -- Sucursal ( se toma la del Almacen )
+                                                AND (
+                                                        criterio.Sucursal IS NULL
+                                                     OR criterio.Sucursal = Alm.Sucursal
+                                                    )
                                                     -- Cliente ( Cuando la orden viene de solcitud de abastos)
                                                 AND (
                                                         criterio.Cliente IS NULL
-                                                     OR sol_abasto.cliente = criterio.Cliente
+                                                     OR criterio.Cliente = sol_abasto.cliente
                                                     )
                                                     -- Proveedor Categoria Producto Servicio 
                                                 AND ( 

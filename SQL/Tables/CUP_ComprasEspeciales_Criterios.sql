@@ -21,6 +21,10 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
   FechaRegistro DATETIME NOT NULL
                 CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_FechaRegistro]
                 DEFAULT GETDATE(),
+  Sucursal      INT
+                CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Sucursal
+                FOREIGN KEY
+                REFERENCES Sucursal ( Sucursal ),
   Cliente       CHAR(10)
                 CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Cliente
                 FOREIGN KEY
@@ -100,9 +104,10 @@ INCLUDE
   Usuario,
   Descripcion,
   FechaRegistro,
+  Sucursal,
   Cliente,
-  ProvCatProductoServicio_ID,
   Proveedor,
+  ProvCatProductoServicio_ID,
   ArtCategoria,
   ArtGrupo,
   ArtFamilia,
@@ -115,6 +120,54 @@ INCLUDE
   FechaInicio
 )
 
+CREATE NONCLUSTERED INDEX IX_CUP_ComprasEspeciales_Criterios_Sucursal
+  ON CUP_ComprasEspeciales_Criterios ( Sucursal )
+INCLUDE 
+( 
+  ID,
+  Usuario,
+  Descripcion,
+  FechaRegistro,
+  Cliente,
+  Proveedor,
+  ProvCatProductoServicio_ID,
+  ArtCategoria,
+  ArtGrupo,
+  ArtFamilia,
+  Articulo,
+  Dimension,
+  Vinil,
+  Accion_ID,
+  Recurrencia_ID,
+  Recurrencia_Cantidad,
+  FechaInicio,
+  Activo
+)
+
+CREATE NONCLUSTERED INDEX IX_CUP_ComprasEspeciales_Criterios_Cliente
+  ON CUP_ComprasEspeciales_Criterios ( Cliente )
+INCLUDE 
+( 
+  ID,
+  Usuario,
+  Descripcion,
+  FechaRegistro,
+  Sucursal,
+  Proveedor,
+  ProvCatProductoServicio_ID,
+  ArtCategoria,
+  ArtGrupo,
+  ArtFamilia,
+  Articulo,
+  Dimension,
+  Vinil,
+  Accion_ID,
+  Recurrencia_ID,
+  Recurrencia_Cantidad,
+  FechaInicio,
+  Activo
+)
+
 CREATE NONCLUSTERED INDEX IX_CUP_ComprasEspeciales_Criterios_Proveedor
   ON CUP_ComprasEspeciales_Criterios ( Proveedor )
 INCLUDE 
@@ -123,8 +176,33 @@ INCLUDE
   Usuario,
   Descripcion,
   FechaRegistro,
+  Sucursal,
   Cliente,
   ProvCatProductoServicio_ID,
+  ArtCategoria,
+  ArtGrupo,
+  ArtFamilia,
+  Articulo,
+  Dimension,
+  Vinil,
+  Accion_ID,
+  Recurrencia_ID,
+  Recurrencia_Cantidad,
+  FechaInicio,
+  Activo
+)
+
+CREATE NONCLUSTERED INDEX IX_CUP_ComprasEspeciales_Criterios_ProvCatProductoServicio_ID
+  ON CUP_ComprasEspeciales_Criterios ( ProvCatProductoServicio_ID )
+INCLUDE 
+( 
+  ID,
+  Usuario,
+  Descripcion,
+  FechaRegistro,
+  Sucursal,
+  Cliente,
+  Proveedor,
   ArtCategoria,
   ArtGrupo,
   ArtFamilia,
@@ -147,9 +225,10 @@ INCLUDE
   Usuario,
   Descripcion,
   FechaRegistro,
+  Sucursal,
   Cliente,
-  ProvCatProductoServicio_ID,
   Proveedor,
+  ProvCatProductoServicio_ID,
   ArtCategoria,
   ArtGrupo,
   ArtFamilia,
