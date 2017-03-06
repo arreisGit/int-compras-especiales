@@ -30,6 +30,7 @@ AS BEGIN
 		@Mov              CHAR(20),
 		@MovID            VARCHAR(20),
 		@MovTipo          CHAR(20),
+    @GenerarMovTipo   CHAR(20),
 		@Cup_VtaMostrador BIT,
 		@IdGasto          INT;
 
@@ -182,6 +183,20 @@ AS BEGIN
 
 	IF @Modulo = 'COMS'
 	BEGIN
+    
+    SELECT 
+      @Estatus = c.Estatus,
+      @Mov = c.Mov,
+      @MovTipo= t.Clave,
+      @GenerarMovTipo = gt.Clave
+    FROM 
+      Compra c
+    JOIN MovTipo t ON t.Modulo = 'COMS'
+                  AND t.Mov = c.Mov
+    JOIN Movtipo gt ON gt.Modulo = 'COMS'
+                   AND gt.Mov = @GenerarMov 
+    WHERE 
+      c.ID = @ID
 
 		-- Kike Sierra: 17/07/2013: Procedimiento para la actualizacion de la tabla CuprumAnexo,
     -- segun el certificado especificado en SerieLoteMov          
@@ -229,7 +244,21 @@ AS BEGIN
 			@Okref OUTPUT,
 			@IDGenerar;
 
-    -- 
+    -- Kike Sierra: 2017-06-03: Procedimiento almacenado encargado de realizar el envio de
+    -- las notificaciones de avance de las compras especiales.
+    EXEC dbo.CUP_SPP_ComprasEspeciales_Notificaciones
+	    @Modulo,
+	    @ID,   
+	    @Accion,       
+	    @Base,
+      @Estatus,
+      @Mov,
+      @MovTipo,     
+	    @GenerarMov,
+      @GenerarMovTipo,
+	    @Usuario,
+      @OK OUTPUT,
+      @OkRef OUTPUT     
 
 	END;
 
