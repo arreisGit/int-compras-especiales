@@ -193,7 +193,7 @@ AS BEGIN
       Compra c
     JOIN MovTipo t ON t.Modulo = 'COMS'
                   AND t.Mov = c.Mov
-    JOIN Movtipo gt ON gt.Modulo = 'COMS'
+    LEFT JOIN Movtipo gt ON gt.Modulo = 'COMS'
                    AND gt.Mov = @GenerarMov 
     WHERE 
       c.ID = @ID
