@@ -147,8 +147,9 @@ AS BEGIN
       BEGIN
 
         EXEC msdb.dbo.sp_send_dbmail  
-          @profile_name = @copy_recipients,  
+          @profile_name = @profile_name,  
           @recipients = @recipients,  
+          @copy_recipients = @copy_recipients,
           @blind_copy_recipients = @blind_copy_recipients,
           @body =  @body,  
           @subject = @subject,
