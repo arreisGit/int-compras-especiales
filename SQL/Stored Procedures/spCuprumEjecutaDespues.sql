@@ -35,7 +35,7 @@ AS BEGIN
 
 	IF @modulo = 'PROD'
 	BEGIN
-		--Kike Sierra: 11/07/2013: Procedimiento para la cancelacion parcial de produccion.          
+		-- Kike Sierra: 11/07/2013: Procedimiento para la cancelacion parcial de produccion.          
 		EXEC dbo.spCuprumCancelacionParcialProd
 			@Modulo,
 			@ID,
@@ -45,7 +45,8 @@ AS BEGIN
 			@Usuario,
 			@Ok OUTPUT,
 			@Okref OUTPUT;
-		--Carlos Jimenez: 04/02/2015: Procedimiento para enviar correo del inventario actual del material puesto en la Orden de Produccion
+
+		-- Carlos Jimenez: 04/02/2015: Procedimiento para enviar correo del inventario actual del material puesto en la Orden de Produccion
 		EXEC CUP_SPQ_InventarioProduccion
 			@Modulo,
 			@ID,
@@ -54,7 +55,7 @@ AS BEGIN
 
 	IF @modulo = 'INV'
 	BEGIN
-		--Kike Sierra: 11/07/2013: Procedimiento para la la devolucion merma en las Ordenes Consumo          
+		-- Kike Sierra: 11/07/2013: Procedimiento para la la devolucion merma en las Ordenes Consumo          
 		EXEC dbo.spCuprumCancelacionParcialProd
 			@Modulo,
 			@ID,
@@ -65,7 +66,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		--MZUNIGAF: 16/03/2015: Procedimiento para eliminar decimales en transitos y Concluirlos
+		-- MZUNIGAF: 16/03/2015: Procedimiento para eliminar decimales en transitos y Concluirlos
 		EXEC dbo.spCuprumConcluyeTransito
 			@Modulo,
 			@ID;
@@ -75,7 +76,7 @@ AS BEGIN
 	IF @Modulo = 'VTAS'
 	BEGIN
 
-		----Kike Sierra: 20/OCT/2015: 
+		-- Kike Sierra: 20/OCT/2015: 
 		SELECT
 			@Mov = v.Mov,
 			@MovID = v.MovID,
@@ -89,7 +90,7 @@ AS BEGIN
 		WHERE
       v.ID = @ID;
 
-		--Kike Sierra: 15/10/2013 : Informa cuando una Orden C esta repetida          
+		-- Kike Sierra: 15/10/2013 : Informa cuando una Orden C esta repetida          
 		EXEC dbo.spCuprumInformaVtaOrdenC
 			@Modulo,
 			@ID,
@@ -100,7 +101,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		--Kike SIerra 20/04/2014: Procedimiento almacenado encargado de controlar el flujo de las Factuars Anticipo automaticas dentro del apartado de vtas        
+		-- Kike SIerra 20/04/2014: Procedimiento almacenado encargado de controlar el flujo de las Factuars Anticipo automaticas dentro del apartado de vtas        
 		EXEC dbo.spCuprumVentaPedidoFactA
 			@ID,
 			@Usuario,
@@ -109,7 +110,7 @@ AS BEGIN
 			@GenerarMov,
 			0;
 
-		--Kike Sierra: 27/06/2014 : Actualiza el DMovID del movflujo de las cotizaciones que se mandaron a venta perdida.        
+		-- Kike Sierra: 27/06/2014 : Actualiza el DMovID del movflujo de las cotizaciones que se mandaron a venta perdida.        
 		EXEC dbo.spCuprumCotizacionVtaPerdida
 			@Modulo,
 			@ID,
@@ -132,7 +133,7 @@ AS BEGIN
 			@MovTipo,
 			@Accion;
 
-		----Kike Sierra: 01/10/2015 : Encargado de Facturar y Cobrar la Venta Mostrador.
+		-- Kike Sierra: 01/10/2015 : Encargado de Facturar y Cobrar la Venta Mostrador.
 		IF ISNULL(@CUP_VtaMostrador, 0) = 1
 		BEGIN
 			EXEC CUP_spp_FacturarVentaMostrador
@@ -152,7 +153,7 @@ AS BEGIN
 
 		END;
 
-		--Carlos Orozco: 11/07/2016: Generar Log Para Guardar la Estrategia Utilizada
+		-- Carlos Orozco: 11/07/2016: Generar Log Para Guardar la Estrategia Utilizada
 		EXEC CUP_SPI_LogVentaDescuentos
 			@ID,
 			@Mov,
@@ -164,7 +165,7 @@ AS BEGIN
 			@Usuario,
 			@ID;
 
-		--Dev 23-01-2017: Ejecuta procesos despues de Afectar la Bonificacion desde Factura
+		-- Dev 23-01-2017: Ejecuta procesos despues de Afectar la Bonificacion desde Factura
 		EXEC CUP_sp_DespuesBonificacionesFactura
 			@Modulo,
 			@ID,
@@ -182,7 +183,7 @@ AS BEGIN
 	IF @Modulo = 'COMS'
 	BEGIN
 
-		--Kike Sierra: 17/07/2013: Procedimiento para la actualizacion de la tabla CuprumAnexo,
+		-- Kike Sierra: 17/07/2013: Procedimiento para la actualizacion de la tabla CuprumAnexo,
     -- segun el certificado especificado en SerieLoteMov          
 		EXEC dbo.spCuprumAnexoCertificado
 			@Modulo,
@@ -194,7 +195,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		--Kike Sierra: 09/10/2013: Procedimiento encargado de aplicar de manera automática los anticipos a Entradas de Compra.          
+		-- Kike Sierra: 09/10/2013: Procedimiento encargado de aplicar de manera automática los anticipos a Entradas de Compra.          
 		EXEC dbo.spCuprumAplicacionAutoAnticipoOrdenC
 			@Modulo,
 			@ID,
@@ -205,7 +206,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		--Kike Sierra: 09/04/2015: Procedimiento encargado de recalcular el vencimiento de los controles de calidad y sus Entradas.          
+		-- Kike Sierra: 09/04/2015: Procedimiento encargado de recalcular el vencimiento de los controles de calidad y sus Entradas.          
 		EXEC dbo.spCMLRecalcularVencimientoCOMS
 			@Modulo,
 			@ID,
@@ -216,7 +217,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		--Procedimiento encargado de ejecutar los cambios de Costos Base y Metal de Compra.
+		-- Procedimiento encargado de ejecutar los cambios de Costos Base y Metal de Compra.
 		EXEC dbo.CUP_spAfectacionesEfectoOCCOMS
 			@Modulo,
 			@ID,
@@ -227,6 +228,8 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT,
 			@IDGenerar;
+
+    -- 
 
 	END;
 
@@ -405,7 +408,7 @@ AS BEGIN
   /*** Apartado Varios ( Dos o mas modulos, donde no requiera que se valide el modulo antes de ejecutar el procedimiento)           
   ya sea por que dentro del mismo procedimiento lo valide. O el efecto sea igual para todos ***************************/
 
-	--Kike SIerra 12/09/2013: Procedimiento almacenado que genera traspasos automaicos a partir de un movimiento de pedido especifico.          
+	-- Kike SIerra 12/09/2013: Procedimiento almacenado que genera traspasos automaicos a partir de un movimiento de pedido especifico.          
 	EXEC dbo.spCUPRUMPedidoTraspasoAuto
 		@Modulo,
 		@ID,
@@ -418,7 +421,7 @@ AS BEGIN
 		@Okref OUTPUT,
 		@FacturaID OUTPUT;
 
-	--Kike SIerra 16/10/2013 Prcedimiento almacenado que se encarga de "arrastrar" la situacion en las afectaciones.          
+	-- Kike SIerra 16/10/2013 Prcedimiento almacenado que se encarga de "arrastrar" la situacion en las afectaciones.          
 	EXEC dbo.spCuprumArrastraSituacion
 		@Modulo,
 		@ID,
@@ -429,7 +432,7 @@ AS BEGIN
 		@Ok OUTPUT,
 		@Okref OUTPUT;
 
-	--Kike Sierra: 03/09/2013: Procedimiento Almacenado Encargado de Disparar Gastos al concluir Embarques.          
+	-- Kike Sierra: 03/09/2013: Procedimiento Almacenado Encargado de Disparar Gastos al concluir Embarques.          
 	EXEC spCuprumEmbarqueGasto
 		@Modulo,
 		@ID,
@@ -440,7 +443,7 @@ AS BEGIN
 		@Ok OUTPUT,
 		@Okref OUTPUT;
 
-	--Kike SIerra 01/07/2014 Prcedimiento almacenado que se encarga de "arrastrar" las facturas de compras y gasto a cxp.  
+	-- Kike SIerra 01/07/2014 Prcedimiento almacenado que se encarga de "arrastrar" las facturas de compras y gasto a cxp.  
 	EXEC dbo.spCuprumArrastraFacturasComsGas
 		@Modulo,
 		@ID,
@@ -498,7 +501,7 @@ AS BEGIN
 
 	END;
 
-	--Kike Sierra 12/05/2015: Procedimiento Almacenado encargado de realizar los cambios en fecha requerida  de "Oferta Servicio" de las solicitudes Despues de afectar.
+	-- Kike Sierra 12/05/2015: Procedimiento Almacenado encargado de realizar los cambios en fecha requerida  de "Oferta Servicio" de las solicitudes Despues de afectar.
 	EXEC spCMLServicioSolicitud
 		@Modulo,
 		@ID,
