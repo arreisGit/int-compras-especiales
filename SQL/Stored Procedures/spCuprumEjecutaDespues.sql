@@ -1,12 +1,11 @@
-USE [Cuprum];
+USE [Cuprum]
 GO
 
-/****** Object:  StoredProcedure [dbo].[spCuprumEjecutaDespues]    Script Date: 17/02/2017 12:14:48 p.m. ******/
-
-SET ANSI_NULLS OFF;
+/****** Object:  StoredProcedure [dbo].[spCuprumEjecutaDespues]    Script Date: 06/03/2017 10:10:12 a.m. ******/
+SET ANSI_NULLS OFF
 GO
 
-SET QUOTED_IDENTIFIER ON;
+SET QUOTED_IDENTIFIER ON
 GO
 
 ALTER PROCEDURE [dbo].[spCuprumEjecutaDespues]
@@ -17,7 +16,7 @@ ALTER PROCEDURE [dbo].[spCuprumEjecutaDespues]
 	@GenerarMov CHAR(20),
 	@Usuario    CHAR(10),
 	@Ok         INT OUTPUT,
-	@OkRef      VARCHAR(255) OUTPUT,        
+	@OkRef      VARCHAR(255) OUTPUT,      
 	@FacturaID  INT OUTPUT,
 	@IDGenerar  INT          = NULL
 AS BEGIN
@@ -32,12 +31,10 @@ AS BEGIN
 		@MovID            VARCHAR(20),
 		@MovTipo          CHAR(20),
 		@Cup_VtaMostrador BIT,
-		@IdGasto          INT,
-		@OrdenSurtidoID   INT;
+		@IdGasto          INT;
 
 	IF @modulo = 'PROD'
 	BEGIN
-
 		--Kike Sierra: 11/07/2013: Procedimiento para la cancelacion parcial de produccion.          
 		EXEC dbo.spCuprumCancelacionParcialProd
 			@Modulo,
@@ -48,18 +45,15 @@ AS BEGIN
 			@Usuario,
 			@Ok OUTPUT,
 			@Okref OUTPUT;
-
 		--Carlos Jimenez: 04/02/2015: Procedimiento para enviar correo del inventario actual del material puesto en la Orden de Produccion
 		EXEC CUP_SPQ_InventarioProduccion
 			@Modulo,
 			@ID,
 			@Accion;
-
 	END;
 
 	IF @modulo = 'INV'
 	BEGIN
-
 		--Kike Sierra: 11/07/2013: Procedimiento para la la devolucion merma en las Ordenes Consumo          
 		EXEC dbo.spCuprumCancelacionParcialProd
 			@Modulo,
@@ -94,19 +88,6 @@ AS BEGIN
 													AND v.Mov = t.Mov
 		WHERE
       v.ID = @ID;
-
-		--#115Sugerencia de proceso mostrador lean en pedidos.
-		EXEC CUP_SP_AfectacionesMostradorLeanDespues
-			@Modulo = @Modulo,
-			@ID = @ID,
-			@Accion = @Accion,
-			@Base = @Base,
-			@GenerarMov = @GenerarMov,
-			@Usuario = @Usuario,
-			@Ok = @Ok OUTPUT,
-			@OkRef = @OkRef OUTPUT,
-			@OrdenSurtidoID = @OrdenSurtidoID OUTPUT,
-			@IDGenerar = @IDGenerar;
 
 		--Kike Sierra: 15/10/2013 : Informa cuando una Orden C esta repetida          
 		EXEC dbo.spCuprumInformaVtaOrdenC
@@ -151,7 +132,7 @@ AS BEGIN
 			@MovTipo,
 			@Accion;
 
-		----Kike Sierra: 01/10/2015 : Encargado de Facturar y Cobrar la Venta Mostrador. 
+		----Kike Sierra: 01/10/2015 : Encargado de Facturar y Cobrar la Venta Mostrador.
 		IF ISNULL(@CUP_VtaMostrador, 0) = 1
 		BEGIN
 			EXEC CUP_spp_FacturarVentaMostrador
@@ -201,7 +182,7 @@ AS BEGIN
 	IF @Modulo = 'COMS'
 	BEGIN
 
-		-- Kike Sierra: 17/07/2013: Procedimiento para la actualizacion de la tabla CuprumAnexo,
+		--Kike Sierra: 17/07/2013: Procedimiento para la actualizacion de la tabla CuprumAnexo,
     -- segun el certificado especificado en SerieLoteMov          
 		EXEC dbo.spCuprumAnexoCertificado
 			@Modulo,
@@ -213,7 +194,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		-- Kike Sierra: 09/10/2013: Procedimiento encargado de aplicar de manera automática los anticipos a Entradas de Compra.          
+		--Kike Sierra: 09/10/2013: Procedimiento encargado de aplicar de manera automática los anticipos a Entradas de Compra.          
 		EXEC dbo.spCuprumAplicacionAutoAnticipoOrdenC
 			@Modulo,
 			@ID,
@@ -224,7 +205,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		-- Kike Sierra: 09/04/2015: Procedimiento encargado de recalcular el vencimiento de los controles de calidad y sus Entradas.          
+		--Kike Sierra: 09/04/2015: Procedimiento encargado de recalcular el vencimiento de los controles de calidad y sus Entradas.          
 		EXEC dbo.spCMLRecalcularVencimientoCOMS
 			@Modulo,
 			@ID,
@@ -235,7 +216,7 @@ AS BEGIN
 			@Ok OUTPUT,
 			@Okref OUTPUT;
 
-		-- Procedimiento encargado de ejecutar los cambios de Costos Base y Metal de Compra.
+		--Procedimiento encargado de ejecutar los cambios de Costos Base y Metal de Compra.
 		EXEC dbo.CUP_spAfectacionesEfectoOCCOMS
 			@Modulo,
 			@ID,
@@ -268,24 +249,10 @@ AS BEGIN
 			@Ok OUTPUT,
 			@OkRef OUTPUT;
 
-		--EB 09/Ene/2017
-		/*Avanza Orden surtido de Pedido al Concluir su Factura Anticipo en un "Cobro"*/
-		EXEC CUP_spFacturaAnticipoAvanzaPedido
-			@Modulo,
-			@ID,
-			@Accion,
-			@Base,
-			@GenerarMov,
-			@Usuario,
-			@Ok OUTPUT,
-			@Okref OUTPUT,
-			@IDGenerar;
-
 	END;
 
 	IF @modulo = 'CXP'
 	BEGIN
-
 		--Kike Sierra 01/10/2013: Procedimiento almacenado encargado de enviar correos automaticos sobre pagos.          
 		EXEC dbo.spCuprumEnvioCorreoPagoProveedor
 			@Modulo,
@@ -296,7 +263,6 @@ AS BEGIN
 			@Usuario,
 			@Ok OUTPUT,
 			@Okref OUTPUT;
-
 	END;
 
 	IF @modulo = 'DIN'
@@ -332,20 +298,18 @@ AS BEGIN
 			WHERE
 				ID_Anticipo = @oid;
 		END;
-
 	END;
 
 	IF @modulo = 'EMB'
 	BEGIN
-
 		IF EXISTS
 		(
 			SELECT
 				1
 			FROM
-				MovFlujo AS mf
-			JOIN gasto AS g ON g.id = mf.dID
-			JOIN Embarque AS e ON e.id = mf.OID
+				MovFlujo mf
+			JOIN gasto g ON g.id = mf.dID
+			JOIN Embarque e ON e.id = mf.OID
 			WHERE
         mf.OModulo = 'EMB'
 			AND OID = @id
@@ -407,7 +371,6 @@ AS BEGIN
 				AND Mov = 'Gastos Fletes'
 			)
 			BEGIN
-
 				INSERT INTO CuprumExcepcionMovPeriodoCerrado
 				VALUES
 				(
@@ -415,7 +378,6 @@ AS BEGIN
 					'GAS',
 					'Gastos Fletes'
 				);
-
 			END;
 
 			EXEC spAfectar
@@ -426,24 +388,22 @@ AS BEGIN
 				NULL,
 				'PRODAUT';
 
-			DELETE
-        EmpresaCfgValidarFechasEx
+			DELETE FROM EmpresaCfgValidarFechasEx
 			WHERE
 				Modulo = 'GAS'
-			AND Empresa = 'CML'
-			AND Mov = 'Gastos Fletes';
+				AND Empresa = 'CML'
+				AND Mov = 'Gastos Fletes';
 
-			DELETE
-        CuprumExcepcionMovPeriodoCerrado
+			DELETE FROM CuprumExcepcionMovPeriodoCerrado
 			WHERE
 				Modulo = 'GAS'
-			AND Empresa = 'CML'
-			AND Mov = 'Gastos Fletes';
+				AND Empresa = 'CML'
+				AND Mov = 'Gastos Fletes';
 		END;
 	END;
 
-  /* Apartado Varios ( Dos o mas modulos, donde no requiera que se valide el modulo antes de ejecutar el procedimiento)           
-  ya sea por que dentro del mismo procedimiento lo valide. O el efecto sea igual para todos */
+  /*** Apartado Varios ( Dos o mas modulos, donde no requiera que se valide el modulo antes de ejecutar el procedimiento)           
+  ya sea por que dentro del mismo procedimiento lo valide. O el efecto sea igual para todos ***************************/
 
 	--Kike SIerra 12/09/2013: Procedimiento almacenado que genera traspasos automaicos a partir de un movimiento de pedido especifico.          
 	EXEC dbo.spCUPRUMPedidoTraspasoAuto
@@ -468,8 +428,8 @@ AS BEGIN
 		@Usuario,
 		@Ok OUTPUT,
 		@Okref OUTPUT;
-	
-  --Kike Sierra: 03/09/2013: Procedimiento Almacenado Encargado de Disparar Gastos al concluir Embarques.          
+
+	--Kike Sierra: 03/09/2013: Procedimiento Almacenado Encargado de Disparar Gastos al concluir Embarques.          
 	EXEC spCuprumEmbarqueGasto
 		@Modulo,
 		@ID,
@@ -498,10 +458,9 @@ AS BEGIN
 
 	IF @modulo = 'GAS'
 	AND @Accion = 'CANCELAR'
-  BEGIN
+	BEGIN
 
-		UPDATE
-      MovFlujo
+		UPDATE MovFlujo
 		SET
 			Cancelado = 1
 		WHERE
@@ -552,7 +511,7 @@ AS BEGIN
 		@OkRef OUTPUT;
 
   SET ANSI_NULLS, ANSI_WARNINGS OFF;
-		
-  RETURN;
+
+	RETURN;
 
 END;
