@@ -1,12 +1,12 @@
-USE [Cuprum];
+USE [Cuprum]
+
 GO
 
-/****** Object:  StoredProcedure [dbo].[spCuprumAntesAfectar]    Script Date: 17/02/2017 01:42:44 p.m. ******/
-
-SET ANSI_NULLS ON;
+/****** Object:  StoredProcedure [dbo].[spCuprumAntesAfectar]    Script Date: 06/03/2017 10:10:30 a.m. ******/
+SET ANSI_NULLS ON
 GO
 
-SET QUOTED_IDENTIFIER ON;
+SET QUOTED_IDENTIFIER ON
 GO
 
 ALTER PROCEDURE [dbo].[spCuprumAntesAfectar]
@@ -20,10 +20,10 @@ ALTER PROCEDURE [dbo].[spCuprumAntesAfectar]
 	@OkRef      VARCHAR(255) OUTPUT
 AS BEGIN
 
-	DECLARE
-		@FechaRequerida DATE,
+  DECLARE
+    @FechaRequerida DATE,
     @Estatus        CHAR(15),
-		@Mov            CHAR(20),
+    @Mov            CHAR(20),
     @MovTipo        CHAR(20),
     @GenerarMovTipo  CHAR(20);
 
@@ -105,14 +105,7 @@ AS BEGIN
 															AND t.Modulo = 'VTAS'
 				WHERE
           v.id = @iD
-			) IN (
-            'VTAS.C',
-            'VTAS.P',
-            'VTAS.S',
-            'VTAS.PR',
-            'VTAS.EST',
-            'VTAS.F'
-			      )
+			) IN ('VTAS.C', 'VTAS.P', 'VTAS.S', 'VTAS.PR', 'VTAS.EST', 'VTAS.F')
 			BEGIN
 				SELECT
 					@FechaREquerida = MAX(FechaRequerida)
@@ -123,8 +116,7 @@ AS BEGIN
 
 				IF @FechaRequerida IS NOT NULL
 				BEGIN
-					UPDATE
-            venta
+					UPDATE venta
 					SET
 						FechaRequerida = @FechaRequerida
 					WHERE
@@ -138,14 +130,12 @@ AS BEGIN
 					SELECT
 						t.clave
 					FROM
-						venta AS v
-					JOIN movtipo AS t ON v.Mov = t.Mov
-																AND t.Modulo = 'VTAS'
+						venta v
+					JOIN movtipo t ON v.Mov = t.Mov
+												AND t.Modulo = 'VTAS'
 					WHERE
             v.id = @iD
-				) IN
-				('VTAS.SD'
-				)
+				) IN ('VTAS.SD')
 				BEGIN
 
 					UPDATE venta
@@ -154,8 +144,7 @@ AS BEGIN
 					WHERE
 						id = @ID;
 
-					UPDATE
-            d
+					UPDATE d
 					SET
 						d.FechaRequerida = v.FechaEmision
 					FROM
@@ -182,13 +171,6 @@ AS BEGIN
 			@Ok OUTPUT,
 			@OkRef OUTPUT;
 
-		SELECT
-			@Mov = Mov
-		FROM
-			CXC
-		WHERE
-      ID = @ID;
-
 	END;
 
 	IF @Modulo = 'COMS'
@@ -199,13 +181,13 @@ AS BEGIN
       @Mov = t.Mov,
       @MovTipo = t.Clave,
       @GenerarMovTipo = gt.Clave
-    FROM 
-      Compra c 
+    FROM
+      Compra c
     JOIN Movtipo t ON t.Modulo = 'COMS'
                   AND t.Mov = c.Mov
     LEFT JOIN Movtipo gt ON gt.Modulo ='COMS'
                         AND gt.Mov = @GenerarMov
-    WHERE 
+    WHERE
       c.Id = @ID
 
 		--Kike Sierra: 11/03/2015: Proceso encargado de Recalcular la Fecha Vencimiento de los Controles Calidad, en base a la fecha factura.
@@ -220,7 +202,6 @@ AS BEGIN
 			@OkRef OUTPUT;
 
 		/*Valida y Corrige las Fechas Requeridas*/
-
 		EXEC spCuprumFechaRequeridaCOMS
 			@modulo,
 			@ID,
@@ -242,10 +223,10 @@ AS BEGIN
 			@Ok OUTPUT,
 			@OkRef OUTPUT;
 
-    -- Kike Sierra: 2017-02-17: Procedimiento encargado de llevar el registro de las  
+    --Kike Sierra: 2017-02-17: Procedimiento encargado de llevar el registro de las
     -- compras especiales.
     EXEC CUP_SPI_ComprasEspeciales_RegistroLog
-      @Modulo,  
+      @Modulo,
       @ID,
       @Accion,
       @Base,
@@ -256,11 +237,10 @@ AS BEGIN
       @GenerarMovTipo,
       @Usuario,
       @OK OUTPUT,
-      @OkRef OUTPUT       
-     
+      @OkRef OUTPUT
+
 	END;
 
-	/*Apartado Varios*/
 	--Kike Sierra: 16/07/2014: Procedimiento ALmacenado encargado de Actualizar los datos del Cliente Mostrador antes de afectar    
 	-- una factura o Factura Anticipo    
 	EXEC spCuprumVtasCteMostrador
@@ -299,3 +279,4 @@ AS BEGIN
 
 	RETURN;
 END;
+GO
