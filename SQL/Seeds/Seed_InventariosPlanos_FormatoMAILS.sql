@@ -56,7 +56,7 @@ SELECT
    
     .caption-top{ caption-side: top; }
 
-    /* Because we''re re not importing a css file
+    /* Because we''re not importing a css file
        the min-width must be hardcoded :v  */
     @media (min-width: 768px) {
       .text-md-left {text-align: left;}
@@ -148,6 +148,17 @@ SELECT
           <div class="row ">
             <div class="col-sm-3
                         col-lg-2">
+               <strong>Cliente:</strong>
+            </div>
+            <div class="col-sm-9
+                        col-lg-10">
+                [CLIENTE]
+            </div>
+          </div>
+
+          <div class="row ">
+            <div class="col-sm-3
+                        col-lg-2">
                <strong>Proveedor:</strong>
             </div>
             <div class="col-sm-9
@@ -155,16 +166,39 @@ SELECT
                 [PROVEEDOR]
             </div>
           </div>
+
+          <div class="row ">
+            <div class="col-sm-3
+                        col-lg-2">
+               <strong>Factura:</strong>
+            </div>
+            <div class="col-sm-9
+                        col-lg-10">
+                [FACTURA]
+            </div>
+          </div>
+
+          <div class="row ">
+            <div class="col-sm-3
+                        col-lg-2">
+               <strong>Fecha Factura:</strong>
+            </div>
+            <div class="col-sm-9
+                        col-lg-10">
+                [FACTURA_FECHA]
+            </div>
+          </div>
+
         </div>
       </div>
     </header>
 
-    <!-- Special Criteria -->
     <main>
+
+      <!-- Special Criteria -->
       <div class="row">
         <div class="col-12">
           
-
           <table class="table table-sm">
             <caption class="caption-top">Criterios aplicados:</caption>
             <thead>
@@ -175,6 +209,28 @@ SELECT
             </thead>
             <tbody>
               [CRITERIOS_ESPECIALES]
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="row">
+        <div class="col-12">
+          
+          <table class="table table-sm">
+            <caption class="caption-top">Detalle del Movimiento:</caption>
+            <thead>
+               <tr>
+                <th>Articulo</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              [DETALLE_MOV]
             </tbody>
           </table>
 
