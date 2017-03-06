@@ -220,4 +220,4 @@ FROM
   [172.18.9.69].InventariosPlanos.dbo.FormatosMail 
 
 
---DELETE   ZITLSAD.InventariosPlanos.dbo.FormatosMail  WHERE id_formato = 33
+--DELETE    [172.18.9.69].InventariosPlanos.dbo.FormatosMail   WHERE id_formato = 67
