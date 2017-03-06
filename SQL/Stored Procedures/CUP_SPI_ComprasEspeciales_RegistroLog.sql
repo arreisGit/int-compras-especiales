@@ -33,7 +33,7 @@ CREATE PROCEDURE [dbo].CUP_SPI_ComprasEspeciales_RegistroLog
     @OkRef          VARCHAR(255) OUTPUT       
 )                
 AS BEGIN 
-  
+
   IF @Modulo = 'COMS'
   AND @Movtipo = 'COMS.O'
   AND @Mov LIKE 'Orden%'
@@ -51,7 +51,7 @@ AS BEGIN
       Criterio_ID
     FROM 
       dbo.CUP_fn_CriteriosCompraEspecial(@ID)
-    
+  
   END
 
 END
