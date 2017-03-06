@@ -64,7 +64,7 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
                   CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Recurrencia
                   FOREIGN KEY  
                   REFERENCES CUP_ComprasEspeciales_Recurrencias(ID),
-  Recurrencia_Cantidad   DECIMAL(18,4) NOT NULL
+  Recurrencia_Cantidad   INT
                          CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_Recurrencia_Cantidad]
                          DEFAULT 0,
   FechaInicio DATE NOT NULL,
