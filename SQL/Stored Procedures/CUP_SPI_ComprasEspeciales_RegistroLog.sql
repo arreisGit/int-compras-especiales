@@ -25,10 +25,9 @@ CREATE PROCEDURE [dbo].CUP_SPI_ComprasEspeciales_RegistroLog
 	  @Accion         CHAR(20),            
 	  @Base           CHAR(20),  
     @Estatus        CHAR(15),
+    @EstatusNuevo   CHAR(15),
     @Mov            CHAR(20),
     @MovTipo        CHAR(20),          
-	  @GenerarMov     CHAR(20),   
-    @GenerarMovTipo CHAR(20),         
 	  @Usuario        CHAR(10),
     @OK             INT          OUTPUT,
     @OkRef          VARCHAR(255) OUTPUT       

@@ -223,22 +223,6 @@ AS BEGIN
 			@Ok OUTPUT,
 			@OkRef OUTPUT;
 
-    --Kike Sierra: 2017-02-17: Procedimiento encargado de llevar el registro de las
-    -- compras especiales.
-    EXEC CUP_SPI_ComprasEspeciales_RegistroLog
-      @Modulo,
-      @ID,
-      @Accion,
-      @Base,
-      @Estatus,
-      @Mov,
-      @MovTipo,
-      @GenerarMov,
-      @GenerarMovTipo,
-      @Usuario,
-      @OK OUTPUT,
-      @OkRef OUTPUT
-
 	END;
 
 	--Kike Sierra: 16/07/2014: Procedimiento ALmacenado encargado de Actualizar los datos del Cliente Mostrador antes de afectar    
