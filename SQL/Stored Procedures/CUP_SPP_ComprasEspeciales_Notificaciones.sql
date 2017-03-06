@@ -65,12 +65,17 @@ AS BEGIN
   
     -- Revisa si existe algun criterio de notificacion de compra.
     SELECT
-      @Criterios_Especiales  = '<td>' + CAST(criterio.Criterio_ID AS VARCHAR) + '</td>'
+      @Criterios_Especiales  = '<td>' + CAST(com_esp.Criterio_ID AS VARCHAR) + '</td>'
                              + '<td>' + LTRIM(RTRIM(criterio.Descripcion)) + '</td>'
     FROM 
-      dbo.CUP_fn_CriteriosCompraEspecial(@ID) criterio
+      dbo.fnCMLMovFlujo('COMS', @ID, 0) mf
+    JOIN CUP_ComprasEspeciales com_esp ON com_esp.Compra_ID = mf.OID
+    JOIN CUP_ComprasEspeciales_Criterios criterio ON criterio.ID = com_esp.Criterio_ID
     WHERE 
-      criterio.Accion = 1
+      mf.Indice <= 0
+    AND mf.OModulo = 'COMS'
+    AND mf.OMovTipo = 'COMS.O'
+    AND mf.OMov LIKE 'Orden%'
 
     IF @@rowcount > 0
     BEGIN
