@@ -55,6 +55,7 @@ AS BEGIN
   IF  (   -- Ordenes Compra y Controles Calidad Pendientes
           @MovTipo ='COMS.O'
       AND @Estatus  = 'PENDIENTE'
+      AND @GenerarMov IS NULL
       )
   OR  (   -- Entradas Concluidas
           @Movtipo IN ('COMS.EG','COMS.F')
