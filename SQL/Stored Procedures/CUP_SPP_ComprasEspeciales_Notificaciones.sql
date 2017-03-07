@@ -166,6 +166,7 @@ AS BEGIN
         @subject = REPLACE(@subject,'[MOVIMIENTO]',@Movimiento)
 
       -- prepara el cabecero del correo
+      SET @body = REPLACE(@body, '[TITLE]', @Movimiento)
       SET @body = REPLACE(@body, '[MOVIMIENTO]', @Movimiento)
       SET @body = REPLACE(@body, '[FECHA]', @Fecha)
       SET @body = REPLACE(@body, '[REFERENCIA]', @Referencia)
@@ -192,6 +193,7 @@ AS BEGIN
           @copy_recipients = @copy_recipients,
           @blind_copy_recipients = @blind_copy_recipients,
           @body =  @body,  
+          @body_format = 'HTML',
           @subject = @subject,
           @reply_to = @reply_to,
           @importance = @importance
