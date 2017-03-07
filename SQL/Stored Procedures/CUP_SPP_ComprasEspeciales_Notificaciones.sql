@@ -174,7 +174,7 @@ AS BEGIN
       SET @body = REPLACE(@body, '[CLIENTE]', @Cliente)
       SET @body = REPLACE(@body, '[PROVEEDOR]', @Proveedor)
       SET @body = REPLACE(@body, '[FACTURA]', @Factura)
-      SET @body = REPLACE(@body, '[FECHA_FACTURA]', @FechaFactura)
+      SET @body = REPLACE(@body, '[FACTURA_FECHA]', @FechaFactura)
 
       -- integra la informacion de los criterios aplicados
       SET @body = REPLACE(@body,'[CRITERIOS_ESPECIALES]', ISNULL(@Criterios_Especiales,'') )
