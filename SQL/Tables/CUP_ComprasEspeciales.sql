@@ -19,11 +19,13 @@ CREATE TABLE dbo.CUP_ComprasEspeciales
   Compra_ID INT NOT NULL
             CONSTRAINT FK_CUP_ComprasEspeciales_Compra
             FOREIGN KEY 
-            REFERENCES Compra( ID) ,
+            REFERENCES Compra( ID)
+            ON DELETE CASCADE,
   Criterio_ID INT NOT NULL
               CONSTRAINT FK_CUP_ComprasEspeciales_Criterios
               FOREIGN KEY 
-              REFERENCES CUP_ComprasEspeciales_Criterios(ID),
+              REFERENCES CUP_ComprasEspeciales_Criterios(ID)
+              ON DELETE CASCADE,
   CONSTRAINT PK_CUP_ComprasEspeciales_Compra_ID_Criterio_ID
             PRIMARY KEY ( Compra_ID, Criterio_ID ),
   CONSTRAINT AK_CUP_ComprasEspeciales_ID

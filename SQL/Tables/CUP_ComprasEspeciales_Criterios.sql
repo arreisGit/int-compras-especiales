@@ -24,46 +24,56 @@ CREATE TABLE dbo.CUP_ComprasEspeciales_Criterios
   Sucursal      INT
                 CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Sucursal
                 FOREIGN KEY
-                REFERENCES Sucursal ( Sucursal ),
+                REFERENCES Sucursal ( Sucursal )
+                ON DELETE CASCADE,
   Cliente       CHAR(10)
                 CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Cliente
                 FOREIGN KEY
-                REFERENCES Cte ( Cliente ),
+                REFERENCES Cte ( Cliente )
+                ON DELETE CASCADE,
   ProvCatProductoServicio_ID HIERARCHYID
                              NULL
                              CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_ProvCatProductoServicio
                              FOREIGN KEY
-                             REFERENCES CUP_ProvCatProductoServicio(ID),
+                             REFERENCES CUP_ProvCatProductoServicio(ID)
+                             ON DELETE CASCADE,
   Proveedor CHAR(10) NULL
             CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Proveedor
             FOREIGN KEY
-            REFERENCES Prov ( Proveedor ),
+            REFERENCES Prov ( Proveedor )
+            ON DELETE CASCADE,
   ArtCategoria VARCHAR(50) NULL
                CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_ArtCategoria
                FOREIGN KEY
-               REFERENCES ArtCat ( Categoria ),
+               REFERENCES ArtCat ( Categoria )
+               ON DELETE CASCADE,
   ArtGrupo VARCHAR(50) NULL
            CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_ArtGrupo
            FOREIGN KEY
-           REFERENCES ArtGrupo ( Grupo ),
+           REFERENCES ArtGrupo ( Grupo )
+           ON DELETE CASCADE,
   ArtFamilia VARCHAR(50) NULL
              CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_ArtFamilia
              FOREIGN KEY
-             REFERENCES ArtFam ( Familia ),
+             REFERENCES ArtFam ( Familia )
+             ON DELETE CASCADE,
   Articulo CHAR(20) NULL
            CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Articulo
            FOREIGN KEY
-           REFERENCES Art ( Articulo ),
+           REFERENCES Art ( Articulo )
+           ON DELETE CASCADE,
   Dimension VARCHAR(20) NULL,
   Vinil     VARCHAR(20) NULL,
   Accion_ID INT NOT NULL
              CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Accion
              FOREIGN KEY 
-             REFERENCES CUP_ComprasEspeciales_Acciones(ID),
+             REFERENCES CUP_ComprasEspeciales_Acciones(ID)
+             ON DELETE CASCADE,
   Recurrencia_ID INT NOT NULL 
                   CONSTRAINT FK_CUP_ComprasEspeciales_Criterios_Recurrencia
                   FOREIGN KEY  
-                  REFERENCES CUP_ComprasEspeciales_Recurrencias(ID),
+                  REFERENCES CUP_ComprasEspeciales_Recurrencias(ID)
+                  ON DELETE CASCADE,
   Recurrencia_Cantidad   INT
                          CONSTRAINT [DF_CUP_ComprasEspeciales_Criterios_Recurrencia_Cantidad]
                          DEFAULT 0,
