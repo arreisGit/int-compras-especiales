@@ -224,6 +224,7 @@ SELECT
             <thead>
                <tr>
                 <th>Articulo</th>
+                <th>Subcuenta</th>
                 <th>Descripción</th>
                 <th>Cantidad</th>
                 <th>Unidad</th>

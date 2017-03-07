@@ -49,8 +49,12 @@ AS BEGIN
     @Referencia VARCHAR(50),
     @Usuario_Nombre VARCHAR(100),
     @OrdenCompra VARCHAR(50),
+    @Cliente CHAR(10),
     @Proveedor VARCHAR(100),
-    @Criterios_Especiales VARCHAR(MAX)
+    @Factura VARCHAR(20),
+    @FechaFactura VARCHAR(30),
+    @Criterios_Especiales VARCHAR(MAX),
+    @Detalle_Mov VARCHAR(MAX)
 
   IF  (   -- Ordenes Compra y Controles Calidad Pendientes
           @MovTipo ='COMS.O'
@@ -100,13 +104,17 @@ AS BEGIN
         @Movimiento = LTRIM(RTRIM(c.Mov)) + ' ' + c.movID,
         @Fecha = CONVERT(VARCHAR(30), c.FechaEmision, 	105),
         @Referencia = ISNULL(c.Referencia,''),
+        @Cliente = ISNULL(sol_abasto.Cliente,''),
         @Proveedor = p.Nombre,
-        @OrdenCompra = ISNULL(orden_compra.Mov,'')
+        @OrdenCompra = ISNULL(orden_compra.Mov,''),
+        @Factura = ISNULL(c.CuprumFactura, ''),
+        @FechaFactura = ISNULL(CONVERT(VARCHAR(30), c.FechaFactura, 	105),'')
       FROM 
         Compra c 
       JOIN Prov p ON p.Proveedor = c.Proveedor
       -- orden de compra
       OUTER APPLY(SELECT TOP 1
+                    ID = OID,
                     Mov = LTRIM(RTRIM(mf.OMov)) + ' ' + mf.OMovID
                   FROM 
                     dbo.fnCMLMovFlujo('COMS',@ID,0) mf 
@@ -117,8 +125,33 @@ AS BEGIN
                   ORDER BY
                     mf.OID ASC
                 ) orden_compra
+      -- Solicitud Abastos
+      OUTER APPLY
+      (
+        SELECT TOP 1 
+          sol_ab.Cliente
+        FROM 
+          CUP_SolicitudesAbastosDetalle sol_abD
+        JOIN CUP_SolicitudesAbastos sol_ab ON sol_ab.solicitudAbasto = sol_abD.solicitudAbasto
+        WHERE
+          sol_abD.ordenCompra = orden_compra.ID
+        ORDER BY
+          sol_abD.partida DESC
+      ) sol_abasto
       WHERE
         c.ID = @ID
+
+      SELECT 
+        @Detalle_Mov = '<td>' + LTRIM(RTRIM(d.Articulo)) + '</td>'
+                     + '<td>' + ISNULL(d.SubCuenta,'') + '</td>'
+                     + '<td>' + LTRIM(RTRIM(Art.Descripcion1)) + '</td>'
+                     + '<td>' + CONVERT(VARCHAR(30), CAST(d.Cantidad AS MONEY)) + '</td>'
+                     + '<td>' + d.Unidad + '</td>'
+      FROM  
+        CompraD d
+      JOIN Art ON Art.Articulo = d.Articulo
+      WHERE 
+        d.Id = @ID
 
       SELECT 
         @Usuario_Nombre = u.Nombre
@@ -133,18 +166,24 @@ AS BEGIN
         @subject = REPLACE(@subject,'[MOVIMIENTO]',@Movimiento)
 
       -- prepara el cabecero del correo
-      SET @body = REPLACE(@body,'[MOVIMIENTO]',@Movimiento)
-      SET @body = REPLACE(@body,'[FECHA]',@Fecha)
-      SET @body = REPLACE(@body,'[REFERENCIA]',@Referencia)
-      SET @body = REPLACE(@body,'[USUARIO]',@Usuario_Nombre)
-      SET @body = REPLACE(@body,'[ORDEN_COMPRA]',@OrdenCompra)
-      SET @body = REPLACE(@body,'[PROVEEDOR]',@Proveedor)
+      SET @body = REPLACE(@body, '[MOVIMIENTO]', @Movimiento)
+      SET @body = REPLACE(@body, '[FECHA]', @Fecha)
+      SET @body = REPLACE(@body, '[REFERENCIA]', @Referencia)
+      SET @body = REPLACE(@body, '[USUARIO]', @Usuario_Nombre)
+      SET @body = REPLACE(@body, '[ORDEN_COMPRA]', @OrdenCompra)
+      SET @body = REPLACE(@body, '[CLIENTE]', @Cliente)
+      SET @body = REPLACE(@body, '[PROVEEDOR]', @Proveedor)
+      SET @body = REPLACE(@body, '[FACTURA]', @Factura)
+      SET @body = REPLACE(@body, '[FECHA_FACTURA]', @FechaFactura)
 
       -- integra la informacion de los criterios aplicados
-      SET @body = REPLACE(@body,'[CRITERIOS_ESPECIALES]',@Criterios_Especiales)
+      SET @body = REPLACE(@body,'[CRITERIOS_ESPECIALES]', ISNULL(@Criterios_Especiales,'') )
 
-      IF @body IS NOT NULL 
-      AND @recipients IS NOT NULL
+      -- integra la informacion del detalle del movimiento
+      SET @body = REPLACE(@body,'[DETALLE_MOV]', ISNULL(@Detalle_Mov,''))
+
+      IF ISNULL(@body,'') <> ''
+      AND ISNULL(@recipients,'') <> ''
       BEGIN
 
         EXEC msdb.dbo.sp_send_dbmail  
