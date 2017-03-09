@@ -9,8 +9,10 @@ GO
   Created by:    Enrique Sierra Gtez
   Creation Date: 2017-02-15
 
-  Description: Devuelve los criterios que convierten a una compra
-  en especial. 
+  Description: Devuelve los criterios 
+  que vuelven una compra especial y que ademas
+  cumplen con la recurrencia necesaria para tomar
+  una accion sobre la misma.
 
   EXAMPLE: 
   SELECT
@@ -23,7 +25,7 @@ GO
     Recurrencia_Cantidad,
     ComprasPreviamenteEfectuadas
   FROM
-    dbo.CUP_fn_CriteriosCompraEspecial(1)
+    dbo.CUP_fn_CompraEspecial_Criterios(1)
 
 ============================================= */
 
@@ -58,144 +60,31 @@ BEGIN
     ComprasPreviamenteEfectuadas
   )
   SELECT DISTINCT
-    criterio.ID,
-    criterio.Descripcion,
-    criterio.Accion_ID,
-    Accion = c_accion.Descripcion,
-    criterio.Recurrencia_ID,
-    Recurrencia = c_recurrencia.Descripcion,
-    Recurrencia_Cantidad = criterio.Recurrencia_Cantidad,
-    ComprasPreviamenteEfectuadas = ISNULL(compras_especiales.Cuantas,0)
+     criterio.Criterio_ID
+    ,criterio.Criterio
+    ,criterio.Accion_ID
+    ,criterio.Accion
+    ,criterio.Recurrencia_ID
+    ,criterio.Recurrencia
+    ,criterio.Recurrencia_Cantidad
+    ,ComprasPreviamenteEfectuadas = ISNULL(compras_especiales.Cuantas,0)
   FROM  
-    Compra c
-  JOIN Movtipo t ON t.Modulo = 'COMS'
-                AND t.Mov = c.Mov
-  JOIN CompraD d ON d.ID = c.ID
-  JOIN Prov p ON p.Proveedor = c.Proveedor
-  JOIN Art a ON d.Articulo = a.Articulo
-  JOIN Alm ON alm.Almacen = c.Almacen
-  CROSS APPLY (
-            SELECT  
-              Dimension =  dbo.CUP_fn_SubCtaDim(d.SubCuenta),
-              Vinil     =  dbo.CUP_fn_SubCtaVinil(d.SubCuenta)
-          ) subCta   
-  LEFT JOIN CUP_ProvClasificacion prov_clas ON prov_clas.Proveedor = p.Proveedor
-  -- Orden de compra origen
-  CROSS APPLY(
-                SELECT TOP  1
-                  ID = mfOc.OID,
-                  FechaRegistro = ISNULL(oc.FechaRegistro, oc.FechaEmision)
-                FROM
-                  dbo.fnCMLMovFlujo('COMS',c.ID,0) mfOc
-                JOIN compra oc ON oc.ID = mfOc.DID
-                WHERE 
-                  mfOc.Indice <= 0
-                AND mfOc.OModulo = 'COMS'
-                AND mfOc.OMovTipo = 'COMS.O'
-                AND mfOc.OMov Like 'Orden%'
-                ORDER BY
-                   mfOc.Indice ASC,
-                   oc.ID ASC
-              ) orden_compra
-  -- Solicitud Abastos
-  OUTER APPLY
-  (
-    SELECT TOP 1 
-      sol_ab.Cliente
-    FROM 
-      CUP_SolicitudesAbastosDetalle sol_abD
-    JOIN CUP_SolicitudesAbastos sol_ab ON sol_ab.solicitudAbasto = sol_abD.solicitudAbasto
-    WHERE
-      sol_abD.ordenCompra = orden_compra.ID
-    ORDER BY
-      sol_abD.partida DESC
-  ) sol_abasto
-	JOIN CUP_ComprasEspeciales_Criterios criterio ON  criterio.Activo = 1
-                                                AND criterio.FechaInicio <= orden_compra.FechaRegistro
-                                                    -- Sucursal ( se toma la del Almacen )
-                                                AND (
-                                                        criterio.Sucursal IS NULL
-                                                     OR criterio.Sucursal = Alm.Sucursal
-                                                    )
-                                                    -- Cliente ( Cuando la orden viene de solcitud de abastos)
-                                                AND (
-                                                        criterio.Cliente IS NULL
-                                                     OR criterio.Cliente = sol_abasto.cliente
-                                                    )
-                                                    -- Proveedor Categoria Producto Servicio 
-                                                AND ( 
-                                                        criterio.ProvCatProductoServicio_ID IS NULL 
-                                                     OR prov_clas.CatProductoServicio.IsDescendantOf(criterio.ProvCatProductoServicio_ID) = 1
-                                                    )
-                                                    -- Proveedor
-                                                AND ( 
-                                                        criterio.Proveedor IS NULL 
-                                                     OR criterio.Proveedor = p.Proveedor
-                                                    )
-                                                    -- Categoria Articulo
-                                                AND ( 
-                                                        criterio.ArtCategoria IS NULL 
-                                                      OR criterio.ArtCategoria = a.Categoria
-                                                    )
-                                                    -- Grupo Articulo
-                                                AND ( 
-                                                        criterio.ArtGrupo IS NULL 
-                                                      OR criterio.ArtGrupo = a.Grupo
-                                                    )
-                                                    -- Familia Articulo
-                                                AND ( 
-                                                        criterio.ArtFamilia IS NULL 
-                                                      OR criterio.ArtFamilia = a.Familia
-                                                    )
-                                                    -- Articulo
-                                                AND (
-                                                        criterio.Articulo IS NULL 
-                                                      OR criterio.Articulo = d.Articulo
-                                                    ) 
-                                                    -- Dimension ( Largo o Ancho )
-                                                AND (
-                                                       criterio.Dimension IS NULL
-                                                     OR ISNULL(criterio.Dimension,'')  = ISNULL(subCta.Dimension,'')
-                                                    )
-                                                    -- Vinil
-                                                AND (
-                                                       criterio.Vinil IS NULL
-                                                     OR ISNULL(criterio.Vinil,'') = ISNULL(subCta.Vinil,'')
-                                                    ) 
-  JOIN CUP_ComprasEspeciales_Acciones c_accion ON c_accion.ID = criterio.Accion_ID
-                                              AND c_accion.Activo = 1
-  -- Solo Reucrrencias Activas
-  JOIN CUP_ComprasEspeciales_Recurrencias c_recurrencia ON c_recurrencia.ID = criterio.Recurrencia_ID
-                                                       AND c_recurrencia.Activo = 1
-  
+     CUP_v_ComprasEspeciales_PosiblesOrdenes criterio
   -- Numero de compras especiales que han tenido al menos una Entrada de compra
   -- y aplican para el criterio
   OUTER APPLY( SELECT   
-                 Cuantas = COUNT(DISTINCT coms_esp.ID)
+                 Cuantas = COUNT(DISTINCT old_coms.Compra_ID)
                FROM 
-                 CUP_ComprasEspeciales coms_esp 
-               JOIN Compra oc_esp ON oc_esp.ID = coms_esp.Compra_ID
-               CROSS APPLY(
-                           SELECT
-                             ID = MAX(mf.DID)
-                           FROM
-                             dbo.fnCMLMovFlujo('COMS',coms_esp.Compra_ID,0) mf
-                           JOIN compra entrada ON entrada.ID = mf.DID
-                           WHERE 
-                             mf.Indice > 0
-                           AND mf.DModulo = 'COMS'
-                           AND mf.DMovTipo IN (
-                                                'COMS.F',
-                                                'COMS.EG'
-                                              )
-                           AND entrada.Estatus = 'CONCLUIDO'
-                          ) entradas_compra
-                WHERE 
-                 coms_esp.Criterio_ID = criterio.ID
-                AND criterio.FechaInicio <=  CAST(oc_esp.FechaRegistro AS DATE) 
-              ) compras_especiales
+                 CUP_v_ComprasEspeciales_PosiblesOrdenes old_coms
+               WHERE
+                  CAST(old_coms.Compra_FechaRegistro AS DATE) <= CAST(criterio.Compra_FechaRegistro AS DATE)  
+               AND old_coms.Compra_Estatus IN ('PENDIENTE','CONCLUIDO')
+               AND old_coms.Compra_ID <> @ID
+               AND old_coms.Compra_Proveedor = criterio.Compra_Proveedor
+               AND old_coms.Criterio_ID = criterio.Criterio_ID
+             ) compras_especiales
   WHERE
-    c.ID = @ID
+    criterio.Compra_ID = @ID
   -- Validar Recurrencia
   AND (
         criterio.Recurrencia_ID = 1 -- Siempre
@@ -204,6 +93,8 @@ BEGIN
           AND ISNULL(compras_especiales.Cuantas,0) < ISNULL(criterio.Recurrencia_Cantidad,0)
           )
       )
+
+
 
   RETURN	
 END
