@@ -19,7 +19,7 @@ GO
 IF EXISTS(SELECT * FROM sysobjects WHERE name='CUP_v_ComprasEspeciales_PosiblesOrdenes')
 	DROP VIEW CUP_v_ComprasEspeciales_PosiblesOrdenes
 GO
-ALTER VIEW CUP_v_ComprasEspeciales_PosiblesOrdenes
+CREATE VIEW CUP_v_ComprasEspeciales_PosiblesOrdenes
 AS
 SELECT DISTINCT
   Compra_ID = c.ID,
@@ -32,9 +32,7 @@ SELECT DISTINCT
   Accion = c_accion.Descripcion,
   criterio.Recurrencia_ID,
   Recurrencia = c_recurrencia.Descripcion,
-  criterio.Recurrencia_Cantidad,
-  [No] = ROW_NUMBER() 
-          OVER( PARTITION BY criterio.ID, c.Proveedor ORDER BY c.FechaRegistro ASC )
+  criterio.Recurrencia_Cantidad
 FROM  
   Compra c
 JOIN Movtipo t ON t.Modulo = 'COMS'

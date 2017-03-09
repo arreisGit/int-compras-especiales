@@ -50,7 +50,7 @@ AS BEGIN
       @ID,
       Criterio_ID
     FROM 
-      dbo.CUP_fn_CriteriosCompraEspecial(@ID)
+      dbo.CUP_fn_CompraEspecial_Criterios(@ID)
   
   END
 

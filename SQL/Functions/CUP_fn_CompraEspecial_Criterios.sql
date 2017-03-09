@@ -1,7 +1,7 @@
 SET ANSI_NULLS, ANSI_WARNINGS ON;
 
-IF EXISTS(SELECT NAME FROM sysobjects WHERE xtype='TF' and name='CUP_fn_CriteriosCompraEspecial')
-	DROP FUNCTION dbo.CUP_fn_CriteriosCompraEspecial
+IF EXISTS(SELECT NAME FROM sysobjects WHERE xtype='TF' and name='CUP_fn_CompraEspecial_Criterios')
+	DROP FUNCTION dbo.CUP_fn_CompraEspecial_Criterios
 
 GO
 
@@ -27,7 +27,7 @@ GO
 
 ============================================= */
 
-CREATE FUNCTION dbo.CUP_fn_CriteriosCompraEspecial
+CREATE FUNCTION dbo.CUP_fn_CompraEspecial_Criterios
 ( 
   @Id INT 
 )
