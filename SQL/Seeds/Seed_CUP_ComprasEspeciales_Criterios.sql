@@ -61,7 +61,7 @@ VALUES
   NULL, -- Dimension ( Ancho / Largo )
   NULL, -- Vinil
   1, -- Accion_ID
-  2, -- Recurrencia_ID
+  3, -- Recurrencia_ID
   3, -- Recurrencia_Cantidad 
   '2016-01-01' -- FechaInicio
 )

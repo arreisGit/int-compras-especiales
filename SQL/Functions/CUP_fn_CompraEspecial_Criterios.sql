@@ -77,10 +77,16 @@ BEGIN
                FROM 
                  CUP_v_ComprasEspeciales_PosiblesOrdenes old_coms
                WHERE
-                  CAST(old_coms.Compra_FechaRegistro AS DATE) <= CAST(criterio.Compra_FechaRegistro AS DATE)  
+                 criterio.Recurrencia_ID IN ( 2, 3 )
+               AND CAST(old_coms.Compra_FechaRegistro AS DATE) <= CAST(criterio.Compra_FechaRegistro AS DATE)  
                AND old_coms.Compra_Estatus IN ('PENDIENTE','CONCLUIDO')
                AND old_coms.Compra_ID <> @ID
-               AND old_coms.Compra_Proveedor = criterio.Compra_Proveedor
+               AND old_coms.Compra_Proveedor = CASE criterio.Recurrencia_ID
+                                                 WHEN 2 THEN -- N Compras
+                                                    old_coms.Compra_Proveedor
+                                                 WHEN 3 THEN -- N Compras X Prov
+                                                    criterio.Compra_Proveedor
+                                               END
                AND old_coms.Criterio_ID = criterio.Criterio_ID
              ) compras_especiales
   WHERE
@@ -89,7 +95,7 @@ BEGIN
   AND (
         criterio.Recurrencia_ID = 1 -- Siempre
       OR  (
-            criterio.Recurrencia_ID = 2 
+            criterio.Recurrencia_ID IN ( 2, 3 ) 
           AND ISNULL(compras_especiales.Cuantas,0) < ISNULL(criterio.Recurrencia_Cantidad,0)
           )
       )
