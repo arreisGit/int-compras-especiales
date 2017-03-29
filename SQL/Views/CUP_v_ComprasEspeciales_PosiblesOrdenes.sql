@@ -41,6 +41,18 @@ JOIN CompraD d ON d.ID = c.ID
 JOIN Prov p ON p.Proveedor = c.Proveedor
 JOIN Art a ON d.Articulo = a.Articulo
 JOIN Alm ON alm.Almacen = c.Almacen
+CROSS APPLY(
+            SELECT TOP 1 
+              FechaComenzo
+            FROM
+              MovTiempo 
+            WHERE 
+              MovTiempo.Modulo = 'COMS'
+            AND MovTiempo.ID = c.ID
+            AND MovTiempo.Estatus = 'SINAFECTAR'
+           ORDER BY 
+              IDOrden ASC
+            ) registro_sinafectar
 CROSS APPLY (
         SELECT  
           Dimension =  dbo.CUP_fn_SubCtaDim(d.SubCuenta),
@@ -61,7 +73,7 @@ OUTER APPLY
     sol_abD.partida DESC
 ) sol_abasto
 JOIN CUP_ComprasEspeciales_Criterios criterio ON criterio.Activo = 1
-                                            AND criterio.FechaInicio <= CAST(c.FechaRegistro As DATE)
+                                            AND criterio.FechaInicio <= CAST(ISNULL(c.FechaRegistro, registro_sinafectar.FechaComenzo) As DATE)
                                                 -- Sucursal ( se toma la del Almacen )
                                             AND (
                                                     criterio.Sucursal IS NULL
