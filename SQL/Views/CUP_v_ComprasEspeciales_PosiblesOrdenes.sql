@@ -51,7 +51,7 @@ CROSS APPLY(
             AND MovTiempo.ID = c.ID
             AND MovTiempo.Estatus = 'SINAFECTAR'
            ORDER BY 
-              IDOrden ASC
+              MovTiempo.IDOrden ASC
             ) registro_sinafectar
 CROSS APPLY (
         SELECT  
@@ -132,4 +132,4 @@ JOIN CUP_ComprasEspeciales_Criterios criterio ON criterio.Activo = 1
 WHERE
   t.Clave = 'COMS.O'
 AND t.Mov LIKE 'Orden%'
-AND c.Estatus IN ('SINAFECTAR','CONCLUIDO','PENDIENTE')
+AND c.Estatus IN ('SINAFECTAR','AFECTANDO','CONCLUIDO','PENDIENTE')
