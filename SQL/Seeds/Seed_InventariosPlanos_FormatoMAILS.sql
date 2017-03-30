@@ -30,239 +30,154 @@ SELECT
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>[TITLE]</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  
+  <title[TITLE]</title>
+
   <!-- Normalize -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css.map">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css"
+        rel="stylesheet">
 
-  <!-- Latest compiled and minified Bootsrap Alpha 4 CSS -->
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
-        integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
-        crossorigin="anonymous">
+   <!-- Ubuntu Font OP -->
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
   <!-- custom css -->
   <style>
-    /* why would anyone use a bigger screen!! :V */
-    .container-fluid {max-width:1170px;}
 
-    .margin-xs-em-bottom {margin-bottom: .3em;}  
-    .margin-sm-em-bottom {margin-bottom: .5em;}
-    .margin-md-em-bottom {margin-bottom:  1em;}  
-    .margin-lg-em-bottom {margin-bottom:  2em;} 
-   
-    .caption-top{ caption-side: top; }
+    body{ font-family: "Ubuntu", "Times New Roman", Times, serif;}
 
-    /* Because we''re not importing a css file
-       the min-width must be hardcoded :v  */
-    @media (min-width: 768px) {
-      .text-md-left {text-align: left;}
-    }  
+    .cml-container {
+      width : 100%;
+      max-width : 1200px;
+      padding: 0 16px 12px 18px;
+      box-sizing: border-box; 
+    }
+
+    .bold { font-weight: bold; }
+    .center { text-align: center; }
+
+    header > h1 { margin-bottom: 12px; }
+    .header-data { border-style: none; }
+    .header-data td { padding: 0 6px 0 6px; }
+
+    .cml-table
+    {
+      text-align: left;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      border-collapse: collapse;
+      background-color: transparent;
+    }
+    
+    .cml-table caption
+    {
+      text-align: left; 
+      font-weight: 100;
+      font-style: italic;
+      font-size: 12px;
+      color: #636c72;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .cml-table th
+    {
+      padding:  4px;
+      line-height: 1.5;
+      border-top: ;
+      border-bottom: 1px solid #eceeef;
+
+    }
+    .cml-table td
+    {
+      padding:  4px;
+      line-height: 1.5;
+      vertical-align: top;
+      display: table-cell;
+      border-bottom: 1px solid #eceeef;
+    }
+    
   </style>
-
 </head>
 <body>
   
-  <div class="container-fluid">
+  <header class="cml-container">
+    <h1 class="center">Notificación de compra especial</h1>
+    
+    <table class="header-data">
+      <tr>
+        <td class="bold">Mov:</td>
+        <td>[MOVIMIENTO]</td>
+      </tr>
+      <tr>
+        <td class="bold">Fecha Emisión:</td>
+        <td>[FECHA]</td>
+      </tr>
+      <tr>
+        <td class="bold">Referencia:</td>
+        <td>[REFERENCIA]</td>
+      </tr>
+      <tr>
+        <td class="bold">Usuario:</td>
+        <td>[USUARIO]</td>
+      </tr>
+      <tr>
+        <td class="bold">Orden Compra:</td>
+        <td>[ORDEN_COMPRA]</td>
+      </tr>
+      <tr>
+        <td class="bold">Cliente:</td>
+        <td>[CLIENTE]</td>
+      </tr>
+      <tr>
+        <td class="bold">Proveedor:</td>
+        <td>[PROVEEDOR]</td>
+      </tr>
+      <tr>
+        <td class="bold">Factura:</td>
+        <td>[FACTURA]</td>
+      </tr>
+      <tr>
+        <td class="bold">Fecha Factura:</td>
+        <td>[FACTURA_FECHA]</td>
+      </tr>
+    </table>
+  </header>
+  
+  <main class="cml-container">
 
-    <header class="margin-lg-em-bottom">
-      <!-- Title -->
-      <div class="row
-                  align-items-center
-                  margin-md-em-bottom">
-        <div class="hidden-sm-down
-                    col-md-4">
-          <img class="img-fluid"
-               src="http://www.cuprum.com/images/header/logo.gif"
-               alt="CUPRUM logo">
-        </div>
-        <div class="col-md-8
-                    text-center
-                    text-md-left">
-          <h3>Notificación de compra especial</h3>
-        </div>
-      </div>
+    <!-- Special Criteria -->
+    <table class="cml-table">
+      <caption>Criterios aplicados:</caption>
+      <thead>
+        <tr>
+          <th>Criterio</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        [CRITERIOS_ESPECIALES]
+      </tbody>
+    </table>
 
-      <!-- Header -->
-      <div class="row text-left" >
-        <div class="col-12 header-info">
-
-          <div class="row">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Mov: </strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                [MOVIMIENTO]
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Fecha Emisión: </strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                [FECHA]
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Referencia:</strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                [REFERENCIA]
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Usuario: </strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                [USUARIO]
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Orden Compra:</strong>
-            </div>
-             <div class="col-sm-9
-                         col-lg-10">
-                [ORDEN_COMPRA]
-            </div>
-          </div>
-
-          <div class="row ">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Cliente:</strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                [CLIENTE]
-            </div>
-          </div>
-
-          <div class="row ">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Proveedor:</strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                [PROVEEDOR]
-            </div>
-          </div>
-
-          <div class="row ">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Factura:</strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                [FACTURA]
-            </div>
-          </div>
-
-          <div class="row ">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Fecha Factura:</strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                [FACTURA_FECHA]
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </header>
-
-    <main>
-
-      <!-- Special Criteria -->
-      <div class="row">
-        <div class="col-12">
-          
-          <table class="table table-sm">
-            <caption class="caption-top">Criterios aplicados:</caption>
-            <thead>
-              <tr>
-                <th>Criterio</th>
-                <th>Descripción</th>
-              </tr>
-            </thead>
-            <tbody>
-              [CRITERIOS_ESPECIALES]
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-
-      <!-- Details -->
-      <div class="row">
-        <div class="col-12">
-          
-          <table class="table table-sm">
-            <caption class="caption-top">Detalle del Movimiento:</caption>
-            <thead>
-               <tr>
-                <th>Articulo</th>
-                <th>Subcuenta</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th>Unidad</th>
-              </tr>
-            </thead>
-            <tbody>
-              [DETALLE_MOV]
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-    </main>
-   
-  </div>
-
-    <!-- Jquery --> 
-  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
-          integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
-          crossorigin="anonymous"></script>
-
-  <!-- Tether -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
-          integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-          crossorigin="anonymous"></script>
-
-  <!-- Bootrap 4 javascript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
-          integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-          crossorigin="anonymous"></script>
-   
-  <!-- custom js -->
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $(".header-info > .row").after(''<div class="clearfix hidden-sm-up margin-xs-em-bottom"></div>'');
-    });
-  </script>
-
+    <!-- Details -->
+    <table class="cml-table">
+      <caption>Detalle del Movimiento:</caption>
+      <thead>
+        <tr>
+          <th>Articulo</th>
+          <th>Subcuenta</th>
+          <th>Descripción</th>
+          <th>Cantidad</th>
+          <th>Unidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        [DETALLE_MOV]
+      </tbody>
+    </table>
+  </main>
 </body>
 </html>',
   destinatarios = '[RESPONSABLES]',
