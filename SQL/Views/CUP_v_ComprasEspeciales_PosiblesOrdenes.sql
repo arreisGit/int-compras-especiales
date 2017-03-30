@@ -24,7 +24,7 @@ AS
 SELECT DISTINCT
   Compra_ID = c.ID,
   Compra_Estatus = c.Estatus,
-  Compra_FechaRegistro = c.FechaRegistro,
+  Compra_FechaRegistro = ISNULL(c.FechaRegistro, registro_sinafectar.FechaComenzo),
   Compra_Proveedor = c.Proveedor,
   Criterio_ID =criterio.ID,
   Criterio =  criterio.Descripcion,
