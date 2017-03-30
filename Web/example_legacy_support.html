@@ -1,243 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>[TITLE]</title>
+
+  <title>Notificacion compras especiales</title>
+
+  <!-- Normalize -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css"
+        rel="stylesheet">
+
+   <!-- Ubuntu Font OP -->
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+
   <!-- custom css -->
   <style>
-    .header-data { border-style: none; }
+
+    body{ font-family: "Ubuntu", "Times New Roman", Times, serif;}
+
+    .cml-container {
+      width : 100%;
+      max-width : 1200px;
+      padding: 0 16px 12px 18px;
+      box-sizing: border-box; 
+    }
+
     .bold { font-weight: bold; }
     .center { text-align: center; }
+
+    header > h1 { margin-bottom: 12px; }
+    .header-data { border-style: none; }
+    .header-data td { padding: 0 6px 0 6px; }
+
+    .cml-table
+    {
+      text-align: left;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      border-collapse: collapse;
+      background-color: transparent;
+    }
+    
+    .cml-table caption
+    {
+      text-align: left; 
+      font-weight: 100;
+      font-style: italic;
+      font-size: 12px;
+      color: #636c72;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .cml-table th
+    {
+      padding:  4px;
+      line-height: 1.5;
+      border-top: ;
+      border-bottom: 1px solid #eceeef;
+
+    }
+    .cml-table td
+    {
+      padding:  4px;
+      line-height: 1.5;
+      vertical-align: top;
+      display: table-cell;
+      border-bottom: 1px solid #eceeef;
+    }
+    
   </style>
 </head>
 <body>
   
-  <header>
-    <h3>Notificación de compra especial</h3>
-
+  <header class="cml-container">
+    <h1 class="center">AWESOME STUFF</h1>
+    
     <table class="header-data">
-        <tr>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-        </tr>
+      <tr>
+        <td class="bold">Mov:</td>
+        <td>Entrada Servicio MY4124-A</td>
+      </tr>
+      <tr>
+        <td class="bold">Fecha Emisión:</td>
+        <td>01 FEB 2017</td>
+      </tr>
+      <tr>
+        <td class="bold">Referencia:</td>
+        <td>Alguna extraña referencia</td>
+      </tr>
+      <tr>
+        <td class="bold">Usuario:</td>
+        <td>Enrique Sierra Gutiérrez</td>
+      </tr>
+      <tr>
+        <td class="bold">Orden Compra:</td>
+        <td>Orden de Sevicio MY7105</td>
+      </tr>
+      <tr>
+        <td class="bold">Cliente:</td>
+        <td>GOOGLE INC.</td>
+      </tr>
+      <tr>
+        <td class="bold">Proveedor:</td>
+        <td>
+      LOREM IPSUM LOREM IPSUN</td>
+      </tr>
+      <tr>
+        <td class="bold">Factura:</td>
+        <td>F00001</td>
+      </tr>
+      <tr>
+        <td class="bold">Fecha Factura:</td>
+        <td>N1</td>
+      </tr>
     </table>
   </header>
+  
+  <main class="cml-container">
 
+    <!-- Special Criteria -->
+    <table class="cml-table">
+      <caption>Criterios aplicados:</caption>
+      <thead>
+        <tr>
+          <th>Criterio</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Lorem ipsum dolor sit amet, consectetur adipi</td>
+        </tr>
+         <tr>
+          <td>2</td>
+          <td>Lorem ipsum dolor sit amet, consectetur adipi</td>
+        </tr>
+      </tbody>
+    </table>
 
-      <!-- Header -->
-      <div class="row text-left" >
-        <div class="col-12 header-info">
-
-          <div class="row">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Mov: </strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                Entrada Servicio MY4124-A
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Fecha Emisión: </strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                01 FEB 2017
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Referencia:</strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                Alguna extraña referencia
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Usuario: </strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                Enrique Sierra Gutiérrez
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Orden Compra:</strong>
-            </div>
-             <div class="col-sm-9
-                         col-lg-10">
-                Orden de Sevicio MY7105
-            </div>
-          </div>
-
-          <div class="row ">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Cliente:</strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                GOOGLE INC.
-            </div>
-          </div>
-
-          <div class="row ">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Proveedor:</strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                LOREM IPSUM LOREM IPSUN<
-            </div>
-          </div>
-
-          <div class="row ">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Factura:</strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                F00001
-            </div>
-          </div>
-
-          <div class="row ">
-            <div class="col-sm-3
-                        col-lg-2">
-               <strong>Fecha Factura:</strong>
-            </div>
-            <div class="col-sm-9
-                        col-lg-10">
-                N1
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </header>
-
-
-    <main>
-
-      <!-- Special Criteria -->
-      <div class="row">
-        <div class="col-12">
-          
-          <table class="table table-sm">
-            <caption class="caption-top">Criterios aplicados:</caption>
-            <thead>
-              <tr>
-                <th>Criterio</th>
-                <th>Descripción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipi</td>
-              </tr>
-               <tr>
-                <td>2</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipi</td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-
-      <!-- Details -->
-      <div class="row">
-        <div class="col-12">
-          
-          <table class="table table-sm">
-            <caption class="caption-top">Detalle del Movimiento:</caption>
-            <thead>
-              <tr>
-                <th>Articulo</th>
-                <th>Subcuenta</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th>Unidad</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>BESTMPEVER</td>
-                <td></td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipi</td>
-                <td>5</td>
-                <td>LBS</td>
-              </tr>
-               <tr>
-                <td>NOTSOGOODMP</td>
-                <td>L3050M1</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipi</td>
-                <td>10</td>
-                <td>LBS</td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-    </main>
+    <!-- Details -->
    
-  </div>
-
-    <!-- Jquery --> 
-  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
-          integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
-          crossorigin="anonymous"></script>
-
-  <!-- Tether -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
-          integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-          crossorigin="anonymous"></script>
-
-  <!-- Bootrap 4 javascript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
-          integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-          crossorigin="anonymous"></script>
-   
-  <!-- custom js -->
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $(".header-info > .row").after('<div class="clearfix hidden-sm-up margin-xs-em-bottom"></div>');
-    });
-  </script>
-
+    <table class="cml-table">
+      <caption>Detalle del Movimiento:</caption>
+      <thead>
+        <tr>
+          <th>Articulo</th>
+          <th>Subcuenta</th>
+          <th>Descripción</th>
+          <th>Cantidad</th>
+          <th>Unidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>BESTMPEVER</td>
+          <td></td>
+          <td>Lorem ipsum dolor sit amet, consectetur adipi</td>
+          <td>5</td>
+          <td>LBS</td>
+        </tr>
+         <tr>
+          <td>NOTSOGOODMP</td>
+          <td>L3050M1</td>
+          <td>Lorem ipsum dolor sit amet, consectetur adipi</td>
+          <td>10</td>
+          <td>LBS</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
 </body>
 </html>
